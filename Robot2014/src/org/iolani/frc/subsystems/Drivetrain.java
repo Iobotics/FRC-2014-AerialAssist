@@ -20,12 +20,16 @@ public class Drivetrain extends Subsystem {
     // here. Call these from Commands.
     
     public void init() {
-        _rVictor = new Victor(1);
+        _rVictor = new Victor(1); //change the channels
         _lVictor = new Victor(2);
         
-        _drive = new RobotDrive(_rVictor.getChannel(), _lVictor.getChannel());
+        _drive = new RobotDrive(_lVictor.getChannel(), _rVictor.getChannel());
         _drive.setSafetyEnabled(false);
     }        
+    
+    public void setTank(double left, double right) {
+        _drive.tankDrive(left, right);
+    }
     
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
