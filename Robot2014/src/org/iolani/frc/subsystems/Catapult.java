@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  * @author iobotics
  */
-public class Shooter extends Subsystem {
+public class Catapult extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
