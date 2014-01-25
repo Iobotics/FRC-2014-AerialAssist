@@ -3,6 +3,7 @@
  * and open the template in the editor.
  */
 package org.iolani.frc.subsystems;
+import org.iolani.frc.commands.OperateTankDrive;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -24,7 +25,7 @@ public class Drivetrain extends Subsystem {
         _lVictor = new Victor(RobotMap.driveLeftPWM);
         _rVictor = new Victor(RobotMap.driveRightPWM); //change the channels
         
-        _drive = new RobotDrive(RobotMap.driveLeftPWM, RobotMap.driveRightPWM);
+        _drive = new RobotDrive(_lVictor, _rVictor);
         _drive.setSafetyEnabled(false);
     }        
     
@@ -34,6 +35,6 @@ public class Drivetrain extends Subsystem {
     
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new OperateTankDrive());
     }
 }
