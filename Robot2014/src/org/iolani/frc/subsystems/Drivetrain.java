@@ -6,6 +6,7 @@ package org.iolani.frc.subsystems;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.iolani.frc.RobotMap;
 
 /**
  *
@@ -20,10 +21,10 @@ public class Drivetrain extends Subsystem {
     // here. Call these from Commands.
     
     public void init() {
-        _rVictor = new Victor(1); //change the channels
-        _lVictor = new Victor(2);
+        _lVictor = new Victor(RobotMap.driveLeftPWM);
+        _rVictor = new Victor(RobotMap.driveRightPWM); //change the channels
         
-        _drive = new RobotDrive(_lVictor.getChannel(), _rVictor.getChannel());
+        _drive = new RobotDrive(RobotMap.driveLeftPWM, RobotMap.driveRightPWM);
         _drive.setSafetyEnabled(false);
     }        
     
