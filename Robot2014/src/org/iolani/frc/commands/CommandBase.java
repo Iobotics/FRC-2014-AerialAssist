@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.iolani.frc.OI;
 import org.iolani.frc.subsystems.Drivetrain;
-import org.iolani.frc.subsystems.ExampleSubsystem;
+import org.iolani.frc.subsystems.Intake;
 
 /**
  * The base for all commands. All atomic commands should subclass CommandBase.
@@ -17,6 +17,7 @@ public abstract class CommandBase extends Command {
     public static OI oi;
     // Create a single static instance of all of your subsystems
     public static Drivetrain drivetrain = new Drivetrain();
+    public static Intake intake = new Intake();
 
     public static void init() {
         // This MUST be here. If the OI creates Commands (which it very likely
@@ -26,6 +27,7 @@ public abstract class CommandBase extends Command {
         // news. Don't move it.
         oi = new OI();
         drivetrain.init();
+        intake.init();
         
         // Show what command your subsystem is running on the SmartDashboard
         SmartDashboard.putData(drivetrain);

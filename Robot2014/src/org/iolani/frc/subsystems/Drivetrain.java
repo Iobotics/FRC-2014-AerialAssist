@@ -14,8 +14,8 @@ import org.iolani.frc.RobotMap;
  * @author iobotics
  */
 public class Drivetrain extends Subsystem {
-    private Victor _rVictor;
     private Victor _lVictor;
+    private Victor _rVictor;
     
     private RobotDrive _drive;
     // Put methods for controlling this subsystem
@@ -23,7 +23,7 @@ public class Drivetrain extends Subsystem {
     
     public void init() {
         _lVictor = new Victor(RobotMap.driveLeftPWM);
-        _rVictor = new Victor(RobotMap.driveRightPWM); //change the channels
+        _rVictor = new Victor(RobotMap.driveRightPWM);
         
         _drive = new RobotDrive(_lVictor, _rVictor);
         _drive.setSafetyEnabled(false);

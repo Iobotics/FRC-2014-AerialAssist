@@ -11,9 +11,10 @@ package org.iolani.frc.commands;
  */
 public class BlowBall extends CommandBase {
     
-    public BlowBall() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+    private double power;
+    
+    public BlowBall(double pwr) {
+        power = pwr;
     }
 
     // Called just before this Command runs the first time
@@ -22,6 +23,7 @@ public class BlowBall extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        intake.setPower(-power);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -31,6 +33,7 @@ public class BlowBall extends CommandBase {
 
     // Called once after isFinished returns true
     protected void end() {
+        intake.setPower(0.0);
     }
 
     // Called when another command which requires one or more of the same

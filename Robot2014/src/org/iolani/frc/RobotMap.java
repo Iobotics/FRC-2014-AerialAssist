@@ -10,4 +10,9 @@ public class RobotMap {
     // drive train //
     public static final int driveLeftPWM = 1;
     public static final int driveRightPWM = 2;
+    
+    
+    // intake //
+    public static final int intakeLeftPWM = 3;
+    public static final int intakeRightPWM = 4;
 }
