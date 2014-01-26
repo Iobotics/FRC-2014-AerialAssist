@@ -63,6 +63,7 @@ public class Robot2014 extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        //System.out.println("Rstick's getThrottle() is: " + CommandBase.oi.getRightStick().getThrottle() + " and getTwist() is : " + CommandBase.oi.getRightStick().getTwist());
     }
     
     /**

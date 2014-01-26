@@ -9,35 +9,36 @@ package org.iolani.frc.commands;
  *
  * @author iobotics
  */
-public class SuckBall extends CommandBase {
+public class SetIntakePower extends CommandBase {
     
-    private double power;
+    private double _power;
     
-    public SuckBall(double pwr) {
-        power = pwr;
+    public SetIntakePower(double power) {
+        requires(intake);
+        _power = power;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        intake.setPower(_power);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        intake.setPower(power);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-        intake.setPower(0.0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+        intake.setPower(0.0);
     }
 }

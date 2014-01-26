@@ -7,6 +7,7 @@ package org.iolani.frc.subsystems;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.iolani.frc.RobotMap;
+import org.iolani.frc.commands.SetIntakePower;
 
 /**
  *
@@ -15,7 +16,7 @@ import org.iolani.frc.RobotMap;
 public class Intake extends Subsystem {
     private Victor _lVictor;
     private Victor _rVictor;
-
+    
     public void init() {
         _lVictor = new Victor(RobotMap.intakeLeftPWM);
         _rVictor = new Victor(RobotMap.intakeRightPWM);
@@ -28,6 +29,6 @@ public class Intake extends Subsystem {
     
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new SetIntakePower(0.0));
     }
 }
