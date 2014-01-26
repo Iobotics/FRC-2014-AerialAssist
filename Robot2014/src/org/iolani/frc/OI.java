@@ -4,7 +4,7 @@ package org.iolani.frc;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import org.iolani.frc.commands.SetIntakeTwist;
+import org.iolani.frc.commands.SetVariableIntakePower;
 import org.iolani.frc.util.PowerScaler;
 
 /**
@@ -26,13 +26,21 @@ public class OI {
     }
     
     public OI() {
-        _intakeButton.whileHeld(new SetIntakeTwist());
+        _intakeButton.whileHeld(new SetVariableIntakePower());
     }
     
     private PowerScaler _driveScaler;
     
     public PowerScaler getDriveScaler() {
         return _driveScaler;
+    }
+    
+    /**
+     * 
+     * @return from 0.0 to 1.0
+     */
+    public double getVariableIntakePower()  {
+        return (_lStick.getTwist() + 1) / 2;
     }
 }
 

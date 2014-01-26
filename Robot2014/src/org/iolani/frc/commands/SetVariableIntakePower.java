@@ -9,21 +9,22 @@ package org.iolani.frc.commands;
  *
  * @author iobotics
  */
-public class SetIntakeTwist extends CommandBase {
+public class SetVariableIntakePower extends CommandBase {
     
-    //private double _power;
+    private boolean _inward;
     
-    public SetIntakeTwist() {
+    public SetVariableIntakePower(boolean inward) {
         requires(intake);
+        _inward = inward;
     }
     
-    /*public SetIntakeTwist(double power) {
-        _power = power;
-    }*/
+    public SetVariableIntakePower() {
+        this(true);
+    }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        intake.setPower(oi.getLeftStick().getTwist());
+        intake.setPower(oi.getVariableIntakePower());
     }
 
     // Called repeatedly when this Command is scheduled to run
