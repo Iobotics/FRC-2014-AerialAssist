@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.iolani.frc.commands.SetVariableIntakePower;
+import org.iolani.frc.commands.ToggleDrive;
 import org.iolani.frc.util.PowerScaler;
 
 /**
@@ -17,6 +18,7 @@ public class OI {
   
     private final Button _suckButton = new JoystickButton(_rStick, 4);
     private final Button _blowButton = new JoystickButton(_rStick, 3);
+    private final Button _toggleDriveButton = new JoystickButton(_lStick, 3);
             
     public Joystick getLeftStick() {
         return _lStick;
@@ -29,6 +31,7 @@ public class OI {
     public OI() {
         _suckButton.whileHeld(new SetVariableIntakePower(true));
         _blowButton.whileHeld(new SetVariableIntakePower(false));
+        _toggleDriveButton.whenPressed(new ToggleDrive());
     }
     
     private PowerScaler _driveScaler;
