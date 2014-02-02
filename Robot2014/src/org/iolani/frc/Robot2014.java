@@ -23,8 +23,6 @@ import org.iolani.frc.commands.CommandBase;
  */
 public class Robot2014 extends IterativeRobot {
 
-    Command autonomousCommand;
-
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.

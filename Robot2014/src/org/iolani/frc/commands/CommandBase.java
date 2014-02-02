@@ -18,6 +18,7 @@ public abstract class CommandBase extends Command {
     public static Drivetrain drivetrain = new Drivetrain();
     public static Intake intake = new Intake();
     public static BallGrabber ballGrabber = new BallGrabber();
+    public static Pneumatics pneumatics = new Pneumatics();
 
     public static void init() {
         // This MUST be here. If the OI creates Commands (which it very likely
@@ -29,6 +30,7 @@ public abstract class CommandBase extends Command {
         drivetrain.init();
         intake.init();
         ballGrabber.init();
+        pneumatics.init();
         
         // Show what command your subsystem is running on the SmartDashboard
         SmartDashboard.putData(drivetrain);

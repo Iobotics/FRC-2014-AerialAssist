@@ -19,4 +19,8 @@ public class RobotMap {
     // ball grabber //
     public static final int ballGrabberValve1 = 1;
     public static final int ballGrabberValve2 = 2;
+    
+    // compressor //
+    public static final int compressorRelay = 1;
+    public static final int pressureSwitchDIO = 14;
 }
