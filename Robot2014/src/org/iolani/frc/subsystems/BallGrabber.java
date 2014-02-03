@@ -32,7 +32,8 @@ public class BallGrabber extends Subsystem {
     }
     
     public boolean isBallSensed() {
-        return _sensor.get();
+        // sensor is active low //
+        return !_sensor.get();
     }
     
     public void initDefaultCommand() {
