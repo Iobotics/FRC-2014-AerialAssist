@@ -7,26 +7,42 @@ package org.iolani.frc.subsystems;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.iolani.frc.RobotMap;
+import org.iolani.frc.commands.RunCompressor;
+import org.iolani.frc.util.Utility;
 
 /**
  *
- * @author iobotics
+ * @author wkd
  */
 public class Pneumatics extends Subsystem {
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
-    private final Compressor _compressor;
     
-    public Pneumatics() {
-        _compressor = new Compressor(RobotMap.pressureSwitchDIO, RobotMap.compressorRelay);
-    }
+    private Compressor _compressor = new Compressor(
+            RobotMap.pressureSwitchDIO,
+            RobotMap.compressorRelay
+        );
+    private boolean _state;
     
     public void init() {
-        _compressor.start();
+    }
+    
+    public void setEnabled(boolean state) {
+        if(state) {
+            _compressor.start();
+        } else {
+            _compressor.stop();
+        }
+        _state = state;
+    }
+    
+    public boolean isEnabled() {
+        return _state;
+    }
+    
+    public boolean isCompressorRunning() {
+        return _compressor.enabled();
     }
     
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        this.setDefaultCommand(new RunCompressor());
     }
 }
