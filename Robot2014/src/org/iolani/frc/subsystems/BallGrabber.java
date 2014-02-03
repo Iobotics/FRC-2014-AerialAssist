@@ -4,6 +4,7 @@
  */
 package org.iolani.frc.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.iolani.frc.RobotMap;
@@ -15,9 +16,11 @@ import org.iolani.frc.commands.SetBallGrabber;
  */
 public class BallGrabber extends Subsystem {
     private DoubleSolenoid _valve;
+    private DigitalInput  _sensor;
     
     public void init() {
-        _valve = new DoubleSolenoid(RobotMap.ballGrabberValve1, RobotMap.ballGrabberValve2);
+        _valve  = new DoubleSolenoid(RobotMap.ballGrabberValve1, RobotMap.ballGrabberValve2);
+        _sensor = new DigitalInput(RobotMap.ballSensorDIO);
     }
 
     public boolean getGrabbed() {
@@ -26,6 +29,10 @@ public class BallGrabber extends Subsystem {
     
     public void setGrabbed(boolean grabbed) {
         _valve.set(grabbed ? DoubleSolenoid.Value.kForward: DoubleSolenoid.Value.kReverse);
+    }
+    
+    public boolean isBallSensed() {
+        return _sensor.get();
     }
     
     public void initDefaultCommand() {
