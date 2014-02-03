@@ -21,8 +21,9 @@ public class OI {
     private final Button _blowButton = new JoystickButton(_rStick, 3);
     //private final Button _toggleDriveButton = new JoystickButton(_lStick, 3);
     
-    private final Button _grabButton    = new JoystickButton(_lStick, 1);
-    private final Button _armGrabButton = new JoystickButton(_lStick, 3);
+    private final Button _grabButton      = new JoystickButton(_lStick, 1);
+    private final Button _armGrabButton   = new JoystickButton(_lStick, 3);
+    private final Button _cancelArmButton = new JoystickButton(_lStick, 4);
             
     public Joystick getLeftStick() {
         return _lStick;
@@ -38,6 +39,7 @@ public class OI {
         //_toggleDriveButton.whenPressed(new ToggleDrive());
         _grabButton.whileHeld(new SetBallGrabber(true));
         _armGrabButton.whenPressed(new GrabBallWhenSensed());
+        _cancelArmButton.whenPressed(new SetBallGrabber(false));
     }
     
     private PowerScaler _driveScaler;
