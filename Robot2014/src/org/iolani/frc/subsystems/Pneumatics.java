@@ -16,13 +16,11 @@ import org.iolani.frc.util.Utility;
  */
 public class Pneumatics extends Subsystem {
     
-    private Compressor _compressor = new Compressor(
-            RobotMap.pressureSwitchDIO,
-            RobotMap.compressorRelay
-        );
-    private boolean _state;
+    private Compressor _compressor;
+    private boolean    _state;
     
     public void init() {
+        _compressor = new Compressor(RobotMap.pressureSwitchDIO, RobotMap.compressorRelay);
     }
     
     public void setEnabled(boolean state) {
