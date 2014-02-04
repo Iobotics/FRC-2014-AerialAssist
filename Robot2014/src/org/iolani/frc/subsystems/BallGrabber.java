@@ -23,7 +23,7 @@ public class BallGrabber extends Subsystem {
         _sensor = new DigitalInput(RobotMap.ballSensorDIO);
     }
 
-    public boolean getGrabbed() {
+    public boolean isGrabbed() {
         return _valve.get() == DoubleSolenoid.Value.kForward;
     }
     
