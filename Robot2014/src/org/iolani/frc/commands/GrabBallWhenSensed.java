@@ -13,9 +13,10 @@ package org.iolani.frc.commands;
  */
 public class GrabBallWhenSensed extends CommandBase {
     // states //
-    private static final int sWAITING = 1;
-    private static final int sCLOSE   = 2;
-    private static final int sGRABBED = 3;
+    private static final int sOPEN    = 1;
+    private static final int sWAITING = 2;
+    private static final int sCLOSE   = 3;
+    private static final int sGRABBED = 4;
     private int _state;
     
     public GrabBallWhenSensed() {
@@ -25,15 +26,25 @@ public class GrabBallWhenSensed extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        // only set the state here, since if the command starts with   //
-        // a ball already present, we don't want the mechanism to open //
-        // and close rapidly.                                          //
-        _state = sWAITING;
+        // Grabbed | Ball | Actions
+        //    N       N      Wait
+        //    N       Y      Close, Grabbed
+        //    Y       N      Open, Wait
+        //    Y       Y      Grabbed
+        if(ballGrabber.isGrabbed()) { 
+            _state = ballGrabber.isBallSensed() ? sGRABBED : sOPEN;
+        } else {
+            _state = ballGrabber.isBallSensed() ? sCLOSE : sWAITING;
+        }
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         switch(_state) {
+            case sOPEN:
+                ballGrabber.setGrabbed(false);
+                _state = sWAITING;
+                break;
             case sWAITING:
                 // if we see a ball, close the grabber //
                 if(ballGrabber.isBallSensed()) {
@@ -48,6 +59,7 @@ public class GrabBallWhenSensed extends CommandBase {
                 break;
             case sGRABBED:
                 // do nothing, just sit here //
+                break;
         }
     }
 
