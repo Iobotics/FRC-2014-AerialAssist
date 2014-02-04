@@ -40,6 +40,7 @@ public class GrabBallWhenSensed extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        System.out.println("GrabCommand: " + _state + ", " + ballGrabber.isGrabbed() + ", " + ballGrabber.isBallSensed());
         switch(_state) {
             case sOPEN:
                 ballGrabber.setGrabbed(false);
@@ -48,12 +49,14 @@ public class GrabBallWhenSensed extends CommandBase {
             case sWAITING:
                 // if we see a ball, close the grabber //
                 if(ballGrabber.isBallSensed()) {
+                    // special handling: get a head start on closing //
                     ballGrabber.setGrabbed(true);
                     _state = sCLOSE;
                     break;
                 }
                 break;
             case sCLOSE:
+                ballGrabber.setGrabbed(true);
                 // we might want a delay here //
                 _state = sGRABBED;
                 break;
