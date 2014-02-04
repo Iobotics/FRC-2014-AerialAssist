@@ -4,6 +4,8 @@ package org.iolani.frc;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.StartCommand;
 import org.iolani.frc.commands.GrabBallWhenSensed;
 import org.iolani.frc.commands.SetBallGrabber;
 import org.iolani.frc.commands.SetVariableIntakePower;
@@ -17,8 +19,8 @@ public class OI {
     private final Joystick _lStick = new Joystick(1);
     private final Joystick _rStick = new Joystick(2);
   
-    private final Button _suckButton = new JoystickButton(_rStick, 4);
-    private final Button _blowButton = new JoystickButton(_rStick, 3);
+    private final Button _suckButton = new JoystickButton(_rStick, 3);
+    private final Button _blowButton = new JoystickButton(_rStick, 4);
     //private final Button _toggleDriveButton = new JoystickButton(_lStick, 3);
     
     private final Button _grabButton      = new JoystickButton(_lStick, 1);
@@ -34,8 +36,16 @@ public class OI {
     }
     
     public OI() {
-        _suckButton.whileHeld(new SetVariableIntakePower(true));
-        _blowButton.whileHeld(new SetVariableIntakePower(false));
+        CommandGroup suckGroup = new CommandGroup();
+        suckGroup.addParallel(new SetVariableIntakePower(true));
+        suckGroup.addParallel(new StartCommand(new GrabBallWhenSensed()));
+        _suckButton.whileHeld(suckGroup);
+        
+        CommandGroup blowGroup = new CommandGroup();
+        blowGroup.addParallel(new SetVariableIntakePower(false));
+        blowGroup.addParallel(new StartCommand(new SetBallGrabber(false)));
+        _blowButton.whileHeld(blowGroup);
+        
         //_toggleDriveButton.whenPressed(new ToggleDrive());
         _grabButton.whileHeld(new SetBallGrabber(true));
         _armGrabButton.whenPressed(new GrabBallWhenSensed());
@@ -53,7 +63,7 @@ public class OI {
      * @return from 0.0 to 1.0
      */
     public double getVariableIntakePower()  {
-        return (_lStick.getTwist() - 1) / 2;
+        return (1 - _lStick.getTwist()) / 2;
     }
 }
 

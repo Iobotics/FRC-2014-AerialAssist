@@ -22,6 +22,10 @@ public class Intake extends Subsystem {
         _rVictor = new Victor(RobotMap.intakeRightPWM);
     }
     
+    /**
+     * 
+     * @param pwr - positive for suck, negative for blow 
+     */
     public void setPower(double pwr) {
         _lVictor.set(pwr);
         _rVictor.set(-pwr);
