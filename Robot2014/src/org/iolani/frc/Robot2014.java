@@ -28,6 +28,7 @@ public class Robot2014 extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
+        System.out.println("Robot starting...");
         // instantiate the command used for the autonomous period
         //autonomousCommand = new ExampleCommand();
 
@@ -36,6 +37,7 @@ public class Robot2014 extends IterativeRobot {
     }
 
     public void autonomousInit() {
+        System.out.println("Autonomous mode active");
         // schedule the autonomous command (example)
         //autonomousCommand.start();
     }
@@ -48,6 +50,7 @@ public class Robot2014 extends IterativeRobot {
     }
 
     public void teleopInit() {
+        System.out.println("Operator mode active");
 	// This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
@@ -64,23 +67,27 @@ public class Robot2014 extends IterativeRobot {
     }
     
     /**
-     * This function is called periodically during test mode
-     */
-    public void testPeriodic() {
-        LiveWindow.run();
-    }
-    
-    /**
      * Called when disabled most begins.
      */
     public void disabledInit() {
-        
+        System.out.println("Disabled mode active");
     }
     
     /**
      * This function is called periodically during disabled mode
      */
     public void disabledPeriodic() {
-        
+        Scheduler.getInstance().run();
+    }
+    
+    public void testInit() {
+        System.out.println("Test mode active");
+    }
+    
+    /**
+     * This function is called periodically during test mode
+     */
+    public void testPeriodic() {
+        LiveWindow.run();
     }
 }
