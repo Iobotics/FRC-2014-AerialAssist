@@ -69,4 +69,18 @@ public class Robot2014 extends IterativeRobot {
     public void testPeriodic() {
         LiveWindow.run();
     }
+    
+    /**
+     * Called when disabled most begins.
+     */
+    public void disabledInit() {
+        
+    }
+    
+    /**
+     * This function is called periodically during disabled mode
+     */
+    public void disabledPeriodic() {
+        
+    }
 }
