@@ -24,11 +24,13 @@ public class Catapult extends Subsystem {
         _valve = new Solenoid(RobotMap.catapultLatchValve);
     }
     
-    public void setLatched(boolean latched) {
+    public boolean setLatched(boolean latched) {
+        boolean old = isLatched();
         _valve.set(!latched);
+        return old;
     }
     
-    public boolean getLatched() {
+    public boolean isLatched() {
         return !_valve.get();
     }
     
