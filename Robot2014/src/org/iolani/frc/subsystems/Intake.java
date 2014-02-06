@@ -23,12 +23,23 @@ public class Intake extends Subsystem {
     }
     
     /**
-     * 
+     * Set the intake power.
      * @param pwr - positive for suck, negative for blow 
+     * @return - the old power
      */
-    public void setPower(double pwr) {
+    public double setPower(double pwr) {
+        double old = this.getPower();
         _lVictor.set(pwr);
         _rVictor.set(-pwr);
+        return old;
+    }
+    
+    /**
+     * Get the intake power.
+     * @return - the current intake power 
+     */
+    public double getPower() {
+        return _lVictor.get();
     }
     
     public void initDefaultCommand() {
