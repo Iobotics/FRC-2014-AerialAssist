@@ -65,6 +65,8 @@ public class InterruptWatcher {
      * Start the watcher.
      */
     public void start() {
+        // must use monitor synchronization instead of method synchronization //
+        // since we want both start() and stop() to be mutually exclusive.    //
         synchronized(this) {
             if(!_thread.isAlive()) _thread.start();
         }
@@ -75,6 +77,8 @@ public class InterruptWatcher {
      * a maximum of WaitTimeMs. 
      */
     public void stop() {
+        // must use monitor synchronization instead of method synchronization //
+        // since we want both start() and stop() to be mutually exclusive.    //
         synchronized(this) {
             if(_state == sRUNNING) {
                 _state = sSTOPPING;
