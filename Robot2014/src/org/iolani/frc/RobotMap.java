@@ -21,7 +21,10 @@ public class RobotMap {
     public static final int ballGrabberValve2 = 2;
     public static final int ballSensorDIO     = 13;
     
-    // compressor //
+    // catapult //
+    public static final int catapultLatchValve = 3;
+    
+    // penumatics //
     public static final int compressorRelay   = 1;
     public static final int pressureSwitchDIO = 14;
 }

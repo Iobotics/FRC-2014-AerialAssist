@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.StartCommand;
 import org.iolani.frc.commands.GrabBallWhenSensed;
 import org.iolani.frc.commands.SetBallGrabber;
+import org.iolani.frc.commands.SetCatapultLatched;
 import org.iolani.frc.commands.SetVariableIntakePower;
 import org.iolani.frc.util.PowerScaler;
 
@@ -23,10 +24,12 @@ public class OI {
     private final Button _blowButton = new JoystickButton(_rStick, 4);
     //private final Button _toggleDriveButton = new JoystickButton(_lStick, 3);
     
-    private final Button _grabButton      = new JoystickButton(_lStick, 1);
+    private final Button _grabButton      = new JoystickButton(_lStick, 2);
     private final Button _armGrabButton   = new JoystickButton(_lStick, 3);
     private final Button _cancelArmButton = new JoystickButton(_lStick, 4);
             
+    private final Button _fireButton = new JoystickButton(_rStick, 1);
+    
     public Joystick getLeftStick() {
         return _lStick;
     }
@@ -50,6 +53,8 @@ public class OI {
         _grabButton.whileHeld(new SetBallGrabber(true));
         _armGrabButton.whenPressed(new GrabBallWhenSensed());
         _cancelArmButton.whenPressed(new SetBallGrabber(false));
+    
+        _fireButton.whileHeld(new SetCatapultLatched(false));
     }
     
     private PowerScaler _driveScaler;

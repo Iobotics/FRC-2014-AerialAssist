@@ -4,25 +4,35 @@
  */
 package org.iolani.frc.subsystems;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.iolani.frc.RobotMap;
+import org.iolani.frc.commands.SetCatapultLatched;
 
 /**
  *
  * @author iobotics
  */
 public class Catapult extends Subsystem {
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
-
+    
+    private Solenoid _valve;
+    
     /**
      * Initialize the catapult.
      */
     public void init() {
-        
+        _valve = new Solenoid(RobotMap.catapultLatchValve);
+    }
+    
+    public void setLatched(boolean latched) {
+        _valve.set(!latched);
+    }
+    
+    public boolean getLatched() {
+        return !_valve.get();
     }
     
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new SetCatapultLatched(true));
     }
 }
