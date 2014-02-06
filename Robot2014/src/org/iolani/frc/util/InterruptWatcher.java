@@ -12,9 +12,9 @@ import java.util.Vector;
  */
 public class InterruptWatcher {
     // watcher states //
-    public static final int sStopped  = 1;
-    public static final int sStopping = 2;
-    public static final int sRunning  = 3;
+    public static final int sSTOPPED  = 1;
+    public static final int sSTOPPING = 2;
+    public static final int sRUNNING  = 3;
     
     /**
      * Default wait timeout (1ms).
@@ -26,7 +26,7 @@ public class InterruptWatcher {
     private final double                  _waitTime;
     private final Vector                  _listeners;
     
-    private int    _state     = sStopped;
+    private int    _state     = sSTOPPED;
     private double _timestamp;
     
     /**
@@ -76,8 +76,8 @@ public class InterruptWatcher {
      */
     public void stop() {
         synchronized(this) {
-            if(_state == sRunning) {
-                _state = sStopping;
+            if(_state == sRUNNING) {
+                _state = sSTOPPING;
                 try {
                     _thread.join();
                 } catch(InterruptedException e) {
@@ -89,7 +89,7 @@ public class InterruptWatcher {
     
     /**
      * Get the state of the watcher.
-     * @return the state (sStopped, sStopping, sRunning)
+     * @return the state (sSTOPPED, sSTOPPING, sRUNNING)
      */
     public int getState() {
         return _state;
@@ -140,9 +140,9 @@ public class InterruptWatcher {
     // inner class to handle the threading //
     private class Runner implements Runnable {
         public void run() {
-            _state = sRunning;
+            _state = sRUNNING;
             _sensor.enableInterrupts();
-            while(_state == sRunning) {
+            while(_state == sRUNNING) {
                 _sensor.waitForInterrupt(_waitTime);
                 // we don't get the results of the interrupt, so check //
                 // if timestamp changed while we were waiting          //
@@ -157,7 +157,7 @@ public class InterruptWatcher {
                 }
             }
             _sensor.disableInterrupts();
-            _state = sStopped;
+            _state = sSTOPPED;
         }
     }   
 }
