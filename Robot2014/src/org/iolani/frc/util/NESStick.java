@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
- *
- * @author wkd
+ * Class to handle the weird buttons on the old NES controller.
+ * @author jmalins
  */
 public class NESStick {
     private final Joystick _stick;
