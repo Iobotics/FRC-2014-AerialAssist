@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.StartCommand;
 import org.iolani.frc.commands.GrabBallWhenSensed;
 import org.iolani.frc.commands.IntakeAndGrabBall;
 import org.iolani.frc.commands.LaunchBall;
+import org.iolani.frc.commands.OperateTankDrive;
 import org.iolani.frc.commands.SetBallGrabber;
 import org.iolani.frc.commands.SetVariableIntakePower;
 import org.iolani.frc.util.PowerScaler;
@@ -25,8 +26,7 @@ public class OI {
     private final Button _suckButton  = new JoystickButton(_rStick, 3);
     private final Button _fireButton  = new JoystickButton(_rStick, 1);
     private final Button _catchButton = new JoystickButton(_lStick, 3);
-    
-    //private final Button _toggleDriveButton = new JoystickButton(_lStick, 3);
+    private final Button _tankDriveButton = new JoystickButton(_lStick, 1);
     
     // debugging, lesser used buttons //
     private final Button _grabButton      = new JoystickButton(_lStick, 2);
@@ -45,8 +45,7 @@ public class OI {
         _suckButton.whileHeld(new IntakeAndGrabBall());
         _fireButton.whileHeld(new LaunchBall());
         _catchButton.whenPressed(new GrabBallWhenSensed());
-        
-        //_toggleDriveButton.whenPressed(new ToggleDrive());
+        _tankDriveButton.whileHeld(new OperateTankDrive());
         
         _grabButton.whileHeld(new SetBallGrabber(true));
         _cancelArmButton.whenPressed(new SetBallGrabber(false));

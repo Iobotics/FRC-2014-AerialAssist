@@ -3,12 +3,12 @@
  * and open the template in the editor.
  */
 package org.iolani.frc.subsystems;
-import org.iolani.frc.commands.OperateTankDrive;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.iolani.frc.RobotMap;
+import org.iolani.frc.commands.OperateMecanumDrive;
 
 /**
  *
@@ -35,23 +35,29 @@ public class Drivetrain extends Subsystem {
     }        
     
     public void setTank(double left, double right) {
+        if(this.isMecanumMode()) {
+            this.setMecanumMode(false);
+        }
         _drive.tankDrive(left, right);
     }
     
     public void setMecanum(double mag, double dir, double rot) {
+        if(!this.isMecanumMode()) {
+            this.setMecanumMode(true);
+        }
         _drive.mecanumDrive_Polar(mag, dir, rot);
     }
     
-    public void setPneumaticDriveSwitch(boolean mecanum) {
+    public void setMecanumMode(boolean mecanum) {
         _solenoid.set(mecanum);
     }
     
-    public boolean isDriveMecanum() {
+    public boolean isMecanumMode() {
         return _solenoid.get();
     }
     
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new OperateTankDrive());
+        setDefaultCommand(new OperateMecanumDrive());
     }
 }

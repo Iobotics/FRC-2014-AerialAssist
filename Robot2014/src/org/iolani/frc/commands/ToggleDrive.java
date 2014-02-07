@@ -18,12 +18,12 @@ public class ToggleDrive extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        drivetrain.setPneumaticDriveSwitch(!drivetrain.isDriveMecanum());
+        drivetrain.setMecanumMode(!drivetrain.isMecanumMode());
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if(drivetrain.isDriveMecanum()) {
+        if(drivetrain.isMecanumMode()) {
             double mag = oi.getRightStick().getMagnitude();
             double dir = oi.getRightStick().getDirectionDegrees();
             double rot = oi.getLeftStick().getX();
