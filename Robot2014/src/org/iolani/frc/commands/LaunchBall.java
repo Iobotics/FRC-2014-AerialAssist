@@ -17,7 +17,7 @@ public class LaunchBall extends CommandGroup {
      * Open the BallGrabber and release the catapult.
      */
     public LaunchBall() {
-        this.addSequential(new SetBallGrabber(false, 250)); // set ball grabber with delay //
+        this.addSequential(new SetBallGrabber(false, 100)); // set ball grabber with delay //
         this.addSequential(new SetCatapultLatched(false));
     }
 }

@@ -22,7 +22,10 @@ public class RobotMap {
     public static final int ballSensorDIO     = 13;
     
     // catapult //
-    public static final int catapultLatchValve = 3;
+    public static final int catapultLatchValve  = 3;
+    public static final int catapultEncoderADIO = 2;
+    public static final int catapultEncoderBDIO = 4;
+    public static final int catapultSwitchDIO   = 5;
     
     // penumatics //
     public static final int compressorRelay   = 1;
