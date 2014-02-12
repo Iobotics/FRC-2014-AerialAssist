@@ -6,10 +6,13 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.StartCommand;
+import org.iolani.frc.commands.DisableCatapult;
 import org.iolani.frc.commands.GrabBallWhenSensed;
 import org.iolani.frc.commands.IntakeAndGrabBall;
 import org.iolani.frc.commands.LaunchBall;
+import org.iolani.frc.commands.RetractCatapult;
 import org.iolani.frc.commands.SetBallGrabber;
+import org.iolani.frc.commands.SetCatapultHeld;
 import org.iolani.frc.commands.SetVariableIntakePower;
 import org.iolani.frc.util.PowerScaler;
 
@@ -32,6 +35,9 @@ public class OI {
     private final Button _grabButton      = new JoystickButton(_lStick, 2);
     private final Button _cancelArmButton = new JoystickButton(_lStick, 4);
     private final Button _blowButton      = new JoystickButton(_rStick, 4);
+    private final Button _testButton      = new JoystickButton(_rStick, 5);
+    private final Button _test2Button     = new JoystickButton(_rStick, 6);
+    private final Button _test3Button     = new JoystickButton(_rStick, 7);
     
     public Joystick getLeftStick() {
         return _lStick;
@@ -55,6 +61,10 @@ public class OI {
         blowGroup.addParallel(new SetVariableIntakePower(false));
         blowGroup.addParallel(new StartCommand(new SetBallGrabber(false)));
         _blowButton.whileHeld(blowGroup);
+        
+        _testButton.whileHeld(new RetractCatapult());
+        _test2Button.whileHeld(new SetCatapultHeld(true));
+        _test3Button.whenPressed(new DisableCatapult());
     }
     
     private PowerScaler _driveScaler;
