@@ -37,7 +37,7 @@ public class AutonomousDrive extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        this.drivetrain.setMecanum(_power, _direction, _rotation); //Not sure what magnitude should be, going with 100% for now.
+        this.drivetrain.setMecanum(_power, _direction, _rotation);
     }
 
     // Make this return true when this Command no longer needs to run execute()
