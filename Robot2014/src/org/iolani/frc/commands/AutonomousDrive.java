@@ -11,11 +11,21 @@ package org.iolani.frc.commands;
  */
 public class AutonomousDrive extends CommandBase {
     
+    private final double _power;
     private final double _direction;
     private final double _rotation;
     
     public AutonomousDrive(double direction, double rotation, double time) {
         requires(drivetrain);
+        _power = 1.0;
+        _direction = direction;
+        _rotation = rotation;
+        this.setTimeout(time);
+    }
+    
+    public AutonomousDrive(double power, double direction, double rotation, double time) {
+        requires(drivetrain);
+        _power = power;
         _direction = direction;
         _rotation = rotation;
         this.setTimeout(time);
@@ -27,7 +37,7 @@ public class AutonomousDrive extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        this.drivetrain.setMecanum(1.0, _direction, _rotation); //Not sure what magnitude should be, going with 100% for now.
+        this.drivetrain.setMecanum(_power, _direction, _rotation); //Not sure what magnitude should be, going with 100% for now.
     }
 
     // Make this return true when this Command no longer needs to run execute()
