@@ -4,13 +4,17 @@
  */
 package org.iolani.frc.commands;
 
+import org.iolani.frc.util.PowerScaler;
+
 /**
  *
  * @author iobotics
  */
-public class OperateTankDrive extends CommandBase {
+public class OperateTractionDrive extends CommandBase {
     
-    public OperateTankDrive() {
+    private static final double DEADBAND = 0.05;
+        
+    public OperateTractionDrive() {
         requires(drivetrain);
     }
 
@@ -20,10 +24,19 @@ public class OperateTankDrive extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        double left = -oi.getLeftStick().getY();
-        double right = -oi.getRightStick().getY();
+        double mag = oi.getRightStick().getY();
+        double rot = oi.getLeftStick().getX();
         
-        drivetrain.setTank(left, right);
+        // signal conditioning //
+        PowerScaler scale = oi.getDriveScaler();
+        if(scale != null) {
+            mag = scale.get(mag);
+            rot = scale.get(rot);
+        }
+        if(Math.abs(mag) < DEADBAND) { mag = 0.0; }
+        if(Math.abs(rot) < DEADBAND) { rot = 0.0; }
+        
+        drivetrain.setArcade(mag, rot);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -38,5 +51,6 @@ public class OperateTankDrive extends CommandBase {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+        this.end();
     }
 }

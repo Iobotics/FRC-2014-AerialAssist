@@ -4,7 +4,6 @@
  */
 package org.iolani.frc.commands;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import org.iolani.frc.util.*;
 
 /**
@@ -13,7 +12,7 @@ import org.iolani.frc.util.*;
  */
 public class OperateMecanumDrive extends CommandBase {
     
-    private static final double DEADBAND = 0.05;
+    private static final double DEADBAND  = 0.05;
     private static final double SLOW_MODE = 0.3;
     
     public OperateMecanumDrive() {
@@ -30,6 +29,8 @@ public class OperateMecanumDrive extends CommandBase {
         double mag = oi.getRightStick().getMagnitude();
         double dir = oi.getRightStick().getDirectionDegrees();
         double rot = oi.getLeftStick().getX();
+        
+        // signal conditioning //
         PowerScaler scale = oi.getDriveScaler();
         if(scale != null) {
             mag = scale.get(mag);
@@ -44,10 +45,6 @@ public class OperateMecanumDrive extends CommandBase {
                 rot = SLOW_MODE * rot;
         }
         */
-        
-        //System.out.println(mag + " , " + dir + " , " + rot);
-        //System.out.println("LR: " + drivetrain.getLeftRearEncoder() + ", RR: " + drivetrain.getRightRearEncoder());
-        //drivetrain.debug();
         
         drivetrain.setMecanum(mag, dir, rot);
     }
@@ -64,5 +61,6 @@ public class OperateMecanumDrive extends CommandBase {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+        this.end();
     }
 }

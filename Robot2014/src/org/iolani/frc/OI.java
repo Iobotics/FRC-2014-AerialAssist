@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.StartCommand;
 import org.iolani.frc.commands.GrabBallWhenSensed;
 import org.iolani.frc.commands.IntakeAndGrabBall;
 import org.iolani.frc.commands.LaunchBall;
-import org.iolani.frc.commands.OperateTankDrive;
+import org.iolani.frc.commands.OperateTractionDrive;
 import org.iolani.frc.commands.SetBallGrabber;
 import org.iolani.frc.commands.SetVariableIntakePower;
 import org.iolani.frc.util.PowerScaler;
@@ -45,7 +45,7 @@ public class OI {
         _suckButton.whileHeld(new IntakeAndGrabBall());
         _fireButton.whileHeld(new LaunchBall());
         _catchButton.whenPressed(new GrabBallWhenSensed());
-        _tankDriveButton.whileHeld(new OperateTankDrive());
+        _tankDriveButton.whileHeld(new OperateTractionDrive());
         
         _grabButton.whileHeld(new SetBallGrabber(true));
         _cancelArmButton.whenPressed(new SetBallGrabber(false));

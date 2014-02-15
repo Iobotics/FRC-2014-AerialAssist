@@ -35,12 +35,17 @@ public class Drivetrain extends Subsystem {
         _valve = new DoubleSolenoid(RobotMap.driveValve1, RobotMap.driveValve2);
         
         _drive = new RobotDrive(_lfVictor, _lrVictor, _rfVictor, _rrVictor);
-        _drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
-        _drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
-        _drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, false);
-        _drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, false);
         _drive.setSafetyEnabled(false);
+        
+        this.setMecanumMode(true);
     }        
+    
+    public void setArcade(double move, double rotate) {
+        if(this.isMecanumMode()) {
+            this.setMecanumMode(false);
+        }
+        _drive.arcadeDrive(move, rotate);
+    }
     
     public void setTank(double left, double right) {
         if(this.isMecanumMode()) {
@@ -57,6 +62,17 @@ public class Drivetrain extends Subsystem {
     }
     
     public void setMecanumMode(boolean mecanum) {
+        if(mecanum) {
+            _drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft,  true);
+            _drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft,   true);
+            _drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, false);
+            _drive.setInvertedMotor(RobotDrive.MotorType.kRearRight,  false);
+        } else {
+            _drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft,  false);
+            _drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft,   false);
+            _drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, false);
+            _drive.setInvertedMotor(RobotDrive.MotorType.kRearRight,  false);
+        }
         _valve.set(mecanum? DoubleSolenoid.Value.kForward: DoubleSolenoid.Value.kReverse);
     }
     
