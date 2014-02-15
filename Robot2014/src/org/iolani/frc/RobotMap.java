@@ -8,23 +8,26 @@ package org.iolani.frc;
  */
 public class RobotMap {
     // drive train //
-    public static final int driveLeftPWM = 1;
-    public static final int driveRightPWM = 2;        
-    public static final int driveSolenoid = 5;
-    
+    public static final int driveLeftFrontPWM  = 10;
+    public static final int driveLeftRearPWM   = 9;
+    public static final int driveRightFrontPWM = 1;
+    public static final int driveRightRearPWM  = 2;
+    public static final int driveValve1        = 1;
+    public static final int driveValve2        = 2;
+
     // intake //
     public static final int intakeLeftPWM = 3;
     public static final int intakeRightPWM = 4;
     
     // ball grabber //
-    public static final int ballGrabberValve1 = 1;
-    public static final int ballGrabberValve2 = 2;
+    public static final int ballGrabberValve1 = 3;
+    public static final int ballGrabberValve2 = 4;
     public static final int ballSensorDIO     = 13;
     
     // catapult //
-    public static final int catapultLatchValve = 3;
+    public static final int catapultLatchValve = 5;
     
     // penumatics //
     public static final int compressorRelay   = 1;
-    public static final int pressureSwitchDIO = 14;
+    public static final int pressureSwitchDIO = 1;
 }

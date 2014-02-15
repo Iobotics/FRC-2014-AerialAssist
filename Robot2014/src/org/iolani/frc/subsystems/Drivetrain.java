@@ -3,8 +3,8 @@
  * and open the template in the editor.
  */
 package org.iolani.frc.subsystems;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.iolani.frc.RobotMap;
@@ -15,22 +15,30 @@ import org.iolani.frc.commands.OperateMecanumDrive;
  * @author iobotics
  */
 public class Drivetrain extends Subsystem {
-    private Victor _lVictor;
-    private Victor _rVictor;
+    private Victor _lfVictor;
+    private Victor _lrVictor;
+    private Victor _rfVictor;
+    private Victor _rrVictor;
     
-    private Solenoid _solenoid;
+    private DoubleSolenoid _valve;
     
     private RobotDrive _drive;
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     
     public void init() {
-        _lVictor = new Victor(RobotMap.driveLeftPWM);
-        _rVictor = new Victor(RobotMap.driveRightPWM);
+        _lfVictor = new Victor(RobotMap.driveLeftFrontPWM);
+        _lrVictor = new Victor(RobotMap.driveLeftRearPWM);
+        _rfVictor = new Victor(RobotMap.driveRightFrontPWM);
+        _rrVictor = new Victor(RobotMap.driveRightRearPWM);
         
-        _solenoid = new Solenoid(RobotMap.driveSolenoid);
+        _valve = new DoubleSolenoid(RobotMap.driveValve1, RobotMap.driveValve2);
         
-        _drive = new RobotDrive(_lVictor, _rVictor);
+        _drive = new RobotDrive(_lfVictor, _lrVictor, _rfVictor, _rrVictor);
+        _drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
+        _drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
+        _drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, false);
+        _drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, false);
         _drive.setSafetyEnabled(false);
     }        
     
@@ -49,11 +57,11 @@ public class Drivetrain extends Subsystem {
     }
     
     public void setMecanumMode(boolean mecanum) {
-        _solenoid.set(mecanum);
+        _valve.set(mecanum? DoubleSolenoid.Value.kForward: DoubleSolenoid.Value.kReverse);
     }
     
     public boolean isMecanumMode() {
-        return _solenoid.get();
+        return _valve.get() == DoubleSolenoid.Value.kForward;
     }
     
     public void initDefaultCommand() {
