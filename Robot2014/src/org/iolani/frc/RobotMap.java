@@ -19,6 +19,8 @@ public class RobotMap {
     public static final int intakeLeftPWM = 3;
     public static final int intakeRightPWM = 4;
     
+    public static final int intakeValve = 6;
+    
     // ball grabber //
     public static final int ballGrabberValve1 = 3;
     public static final int ballGrabberValve2 = 4;

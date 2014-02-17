@@ -4,6 +4,7 @@
  */
 package org.iolani.frc.subsystems;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.iolani.frc.RobotMap;
@@ -17,9 +18,29 @@ public class Intake extends Subsystem {
     private Victor _lVictor;
     private Victor _rVictor;
     
+    private Solenoid _valve;
+    
     public void init() {
         _lVictor = new Victor(RobotMap.intakeLeftPWM);
         _rVictor = new Victor(RobotMap.intakeRightPWM);
+        
+        _valve = new Solenoid(RobotMap.intakeValve);
+    }
+    
+    /**
+     * Set the pneumatic valve
+     * @param down - true for down, false for up
+     */
+    public void setValve(boolean down) {
+        _valve.set(down);
+    }
+    
+    /**
+     * Get the intake valve position
+     * @return - the current intake valve position
+     */
+    public boolean getValve() {
+        return _valve.get();
     }
     
     /**
