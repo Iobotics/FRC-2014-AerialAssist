@@ -11,6 +11,7 @@ import org.iolani.frc.commands.IntakeAndGrabBall;
 import org.iolani.frc.commands.LaunchBall;
 import org.iolani.frc.commands.OperateTractionDrive;
 import org.iolani.frc.commands.SetBallGrabber;
+import org.iolani.frc.commands.SetIntakePosition;
 import org.iolani.frc.commands.SetVariableIntakePower;
 import org.iolani.frc.util.PowerScaler;
 
@@ -27,6 +28,8 @@ public class OI {
     private final Button _fireButton  = new JoystickButton(_rStick, 1);
     private final Button _catchButton = new JoystickButton(_lStick, 3);
     private final Button _tankDriveButton = new JoystickButton(_lStick, 1);
+    private final Button _raiseIntakeButton = new JoystickButton(_rStick, 11);
+    private final Button _lowerIntakeButton = new JoystickButton(_rStick, 10);
     
     // debugging, lesser used buttons //
     private final Button _grabButton      = new JoystickButton(_lStick, 2);
@@ -46,6 +49,8 @@ public class OI {
         _fireButton.whileHeld(new LaunchBall());
         _catchButton.whenPressed(new GrabBallWhenSensed());
         _tankDriveButton.whileHeld(new OperateTractionDrive());
+        _raiseIntakeButton.whenPressed(new SetIntakePosition(false));
+        _lowerIntakeButton.whenPressed(new SetIntakePosition(true));
         
         _grabButton.whileHeld(new SetBallGrabber(true));
         _cancelArmButton.whenPressed(new SetBallGrabber(false));
