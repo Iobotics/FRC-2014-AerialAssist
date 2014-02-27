@@ -19,9 +19,9 @@ void setup(){
   for(int x = boundingLeft; x < boundingRight; x++) { //Iterate through each column, beginning with boundingLeft and ending with boundingBottom
     for(int y = boundingTop; y < boundingBottom; y++){ //Iterate through each row, beginning with the boundingTop row and ending at boundingBottom 
       currentPixel = x + (y * inputImage.width);
-      if((255 - green(inputImage.pixels[currentPixel]) < _color_threshold) 
-           && (blue(inputImage.pixels[currentPixel]) < _noncolor_threshold) && 
-           (red(inputImage.pixels[currentPixel]) < _noncolor_threshold)) { //Makes sure each pixel has a sufficient amount of green, and not too much red / blue
+      if((green(inputImage.pixels[currentPixel]) > _color_threshold) 
+           && (blue(inputImage.pixels[currentPixel]) < _noncolor_threshold) 
+           && (red(inputImage.pixels[currentPixel]) < _noncolor_threshold)) { //Makes sure each pixel has a sufficient amount of green, and not too much red / blue
         point(x,y); //===FOR DEBUGGING: Puts a point at every point detected as green
       }
     }
