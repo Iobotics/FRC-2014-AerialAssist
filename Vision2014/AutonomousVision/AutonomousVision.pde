@@ -6,9 +6,11 @@ private static int boundingLeft = 0;
 private static int boundingRight = 256;
 private static int boundingTop = 0;
 private static int boundingBottom = 192;
+private static int boundedArea = (boundingRight - boundingLeft) * (boundingBottom - boundingTop); //Area of bounded region
 // need method to autocalc and verify photo boundaries
 
 int currentPixel; //The array index of the pixel we're looking at
+int greenPixelCount = 0; //The number of pixels that are registered as green
 PImage inputImage;
 
 void setup(){
@@ -22,8 +24,11 @@ void setup(){
       if((green(inputImage.pixels[currentPixel]) > _color_threshold) 
            && (blue(inputImage.pixels[currentPixel]) < _noncolor_threshold) 
            && (red(inputImage.pixels[currentPixel]) < _noncolor_threshold)) { //Makes sure each pixel has a sufficient amount of green, and not too much red / blue
+        greenPixelCount++;
         point(x,y); //===FOR DEBUGGING: Puts a point at every point detected as green
       }
     }
   }
+  println("Total green pixels: " + greenPixelCount); //===FOR DEBUGGING: Print how many green pixels there are
+  println("Percentage of pixels that are green: " + ((greenPixelCount * 100) / boundedArea)); //===FOR DEBUGGING: Print what percentage of the pixels are green
 }
