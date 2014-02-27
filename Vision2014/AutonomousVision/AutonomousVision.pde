@@ -1,12 +1,12 @@
 private static final int _color_threshold = 170; //How far the color can be from green to be registered as a point
-private static final int _noncolor_threshold = 100; //blue and red values need to be LESS than this in order to qualify a pixel as truly red
+private static final int _noncolor_threshold = 150; //blue and red values need to be LESS than this in order to qualify a pixel as truly red
 private static final int _requiredPixelsPercentage = 70; //What percent of the examined pixels need to be green in order to register as true
 //STUFF
 private static int boundingLeft = 0;
-private static int boundingRight = 256;
+private static int boundingRight;
 private static int boundingTop = 0;
-private static int boundingBottom = 192;
-private static int boundedArea = (boundingRight - boundingLeft) * (boundingBottom - boundingTop); //Area of bounded region
+private static int boundingBottom;
+private static int boundedArea;
 // need method to autocalc and verify photo boundaries
 
 int currentPixel; //The array index of the pixel we're looking at
@@ -14,7 +14,10 @@ int greenPixelCount = 0; //The number of pixels that are registered as green
 PImage inputImage;
 
 void setup(){
-  inputImage = loadImage("test.jpg");
+  inputImage = loadImage("test-far.jpeg");
+  boundingRight = inputImage.width; //===FOR DEBUGGING: Looking at whole canvas instead of small portion (like we will later)
+  boundingBottom = inputImage.height;
+  boundedArea = (boundingRight - boundingLeft) * (boundingBottom - boundingTop); //Area of bounded region
   size(inputImage.width, inputImage.height); //===FOR DEBUGGING
   background(255); //===FOR DEBUGGING
   inputImage.loadPixels();
