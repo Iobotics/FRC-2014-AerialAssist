@@ -17,6 +17,13 @@ PImage inputImage;
 
 void setup(){
   inputImage = loadImage("test-far.jpeg");
+  IPCapture cam = new IPCapture(this, "http://10.24.38.11/mjpg/video.mjpg", "", "");
+  cam.start();
+  cam.run();
+  if(cam.isAvailable())  {
+    cam.read();
+    image(cam,0,0);
+  }
   boundingRight = inputImage.width; //===FOR DEBUGGING: Looking at whole canvas instead of small portion (like we will later)
   boundingBottom = inputImage.height;
   boundedArea = (boundingRight - boundingLeft) * (boundingBottom - boundingTop); //Area of bounded region
