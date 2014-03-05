@@ -92,16 +92,15 @@ public class IPCapture extends PImage implements Runnable {
       url = new URL(urlString);
     }
     catch (MalformedURLException e) {
-      System.err.println("Invalid URL");
+      println("Invalid URL");
       return;
     }
-    
     try {
       conn = (HttpURLConnection)url.openConnection();
       conn.setRequestProperty("Authorization", "Basic " + base64.encode(user + ":" + pass));
     }
     catch (IOException e) {
-      System.err.println("Unable to connect: " + e.getMessage());
+      println("Unable to connect: " + e.getMessage());
       return;
     }
     try {
@@ -109,7 +108,7 @@ public class IPCapture extends PImage implements Runnable {
       jpgOut = new ByteArrayOutputStream(8192);
     }
     catch (IOException e) {
-      System.err.println("Unable to open I/O streams: " + e.getMessage());
+      println("Unable to open I/O streams: " + e.getMessage());
       return;
     }
 
@@ -136,14 +135,14 @@ public class IPCapture extends PImage implements Runnable {
       }
     }
     catch (IOException e) {
-      System.err.println("I/O Error: " + e.getMessage());
+      println("I/O Error: " + e.getMessage());
     }
     try {
       jpgOut.close();
       httpIn.close();
     }
     catch (IOException e) {
-      System.err.println("Error closing I/O streams: " + e.getMessage());
+      println("Error closing I/O streams: " + e.getMessage());
     }
     conn.disconnect();
   }

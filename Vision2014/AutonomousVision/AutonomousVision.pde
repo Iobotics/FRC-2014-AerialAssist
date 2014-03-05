@@ -10,37 +10,47 @@ private static int boundingTop = 0;
 private static int boundingBottom;
 private static int boundedArea;
 // need method to autocalc and verify photo boundaries
+private static int camWidth = 320;
+private static int camHeight = 240;
 
 int currentPixel; //The array index of the pixel we're looking at
 int greenPixelCount = 0; //The number of pixels that are registered as green
 PImage inputImage;
+IPCapture cam;
 
 void setup(){
-  inputImage = loadImage("test-far.jpeg");
-  IPCapture cam = new IPCapture(this, "http://10.24.38.11/mjpg/video.mjpg", "", "");
+  println("Initializing...");
+  cam = new IPCapture(this, "http://10.24.38.11/mjpg/video.mjpg", "", "");
   cam.start();
-  cam.run();
-  if(cam.isAvailable())  {
-    cam.read();
+  
+  boundingRight = camWidth; //===FOR DEBUGGING: Looking at whole canvas instead of small portion (like we will later)
+  boundingBottom = camHeight;
+  boundedArea = (boundingRight - boundingLeft) * (boundingBottom - boundingTop); //Area of bounded region
+  size(320, 240);
+}
+
+void draw(){
+  if(cam.isAvailable()) {
+    cam.read();   
     image(cam,0,0);
   }
-  boundingRight = inputImage.width; //===FOR DEBUGGING: Looking at whole canvas instead of small portion (like we will later)
-  boundingBottom = inputImage.height;
-  boundedArea = (boundingRight - boundingLeft) * (boundingBottom - boundingTop); //Area of bounded region
-  size(inputImage.width, inputImage.height); //===FOR DEBUGGING
-  background(255); //===FOR DEBUGGING
-  inputImage.loadPixels();
-  for(int x = boundingLeft; x < boundingRight; x++) { //Iterate through each column, beginning with boundingLeft and ending with boundingBottom
-    for(int y = boundingTop; y < boundingBottom; y++){ //Iterate through each row, beginning with the boundingTop row and ending at boundingBottom 
-      currentPixel = x + (y * inputImage.width);
-      if((green(inputImage.pixels[currentPixel]) > _color_threshold) 
-           && (blue(inputImage.pixels[currentPixel]) < _noncolor_threshold) 
-           && (red(inputImage.pixels[currentPixel]) < _noncolor_threshold)) { //Makes sure each pixel has a sufficient amount of green, and not too much red / blue
-        greenPixelCount++;
-        point(x,y); //===FOR DEBUGGING: Puts a point at every point detected as green
+  cam.loadPixels();
+  if(cam.pixels.length > 0){
+    for(int x = boundingLeft; x < boundingRight; x++) { //Iterate through each column, beginning with boundingLeft and ending with boundingBottom
+      for(int y = boundingTop; y < boundingBottom; y++){ //Iterate through each row, beginning with the boundingTop row and ending at boundingBottom 
+        currentPixel = x + (y * cam.width);
+        if((green(cam.pixels[currentPixel]) > _color_threshold) 
+             && (blue(cam.pixels[currentPixel]) < _noncolor_threshold) 
+             && (red(cam.pixels[currentPixel]) < _noncolor_threshold)) { //Makes sure each pixel has a sufficient amount of green, and not too much red / blue
+          greenPixelCount++;
+          stroke(255, 0, 0);
+          point(x,y); //===FOR DEBUGGING: Puts a point at every point detected as green
+        }
       }
     }
   }
+  /*
   println("Total green pixels: " + greenPixelCount); //===FOR DEBUGGING: Print how many green pixels there are
   println("Percentage of pixels that are green: " + ((greenPixelCount * 100) / boundedArea)); //===FOR DEBUGGING: Print what percentage of the pixels are green
+  */
 }
