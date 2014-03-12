@@ -15,11 +15,12 @@ public abstract class CommandBase extends Command {
 
     public static OI oi;
     // Create a single static instance of all of your subsystems
-    public static Drivetrain drivetrain = new Drivetrain();
-    public static Intake intake = new Intake();
-    public static BallGrabber ballGrabber = new BallGrabber();
-    public static Catapult catapult = new Catapult();
-    public static Pneumatics pneumatics = new Pneumatics();
+    public final static Drivetrain  drivetrain  = new Drivetrain();
+    public final static Intake      intake      = new Intake();
+    public final static BallGrabber ballGrabber = new BallGrabber();
+    public final static Catapult    catapult    = new Catapult();
+    public final static Winch       winch       = new Winch();
+    public final static Pneumatics  pneumatics  = new Pneumatics();
 
     public static void init() {
         // This MUST be here. If the OI creates Commands (which it very likely
@@ -34,6 +35,7 @@ public abstract class CommandBase extends Command {
         intake.init();
         ballGrabber.init();
         catapult.init();
+        winch.init();
         pneumatics.init();
         
         // Show what command your subsystem is running on the SmartDashboard
@@ -41,6 +43,7 @@ public abstract class CommandBase extends Command {
         SmartDashboard.putData(intake);
         SmartDashboard.putData(ballGrabber);
         SmartDashboard.putData(catapult);
+        SmartDashboard.putData(winch);
         SmartDashboard.putData(pneumatics);
     }
 

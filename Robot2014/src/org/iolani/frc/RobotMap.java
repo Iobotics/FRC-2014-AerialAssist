@@ -28,6 +28,10 @@ public class RobotMap {
     public static final int catapultSensorADC  = 1;
     public static final int catapultProngValve = 5;
     
+    // winch //
+    public static final int winchPWM   = 5;
+    public static final int winchValve = 2;
+    
     // penumatics //
     public static final int compressorRelay   = 1;
     public static final int pressureSwitchDIO = 1;
