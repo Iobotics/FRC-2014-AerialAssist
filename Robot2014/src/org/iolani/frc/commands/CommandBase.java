@@ -19,7 +19,6 @@ public abstract class CommandBase extends Command {
     public final static Intake      intake      = new Intake();
     public final static BallGrabber ballGrabber = new BallGrabber();
     public final static Catapult    catapult    = new Catapult();
-    public final static Winch       winch       = new Winch();
     public final static Pneumatics  pneumatics  = new Pneumatics();
 
     public static void init() {
@@ -35,7 +34,6 @@ public abstract class CommandBase extends Command {
         intake.init();
         ballGrabber.init();
         catapult.init();
-        winch.init();
         pneumatics.init();
         
         // Show what command your subsystem is running on the SmartDashboard
@@ -43,7 +41,6 @@ public abstract class CommandBase extends Command {
         SmartDashboard.putData(intake);
         SmartDashboard.putData(ballGrabber);
         SmartDashboard.putData(catapult);
-        SmartDashboard.putData(winch);
         SmartDashboard.putData(pneumatics);
     }
 
