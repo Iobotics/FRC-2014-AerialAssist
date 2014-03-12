@@ -5,8 +5,8 @@
 package org.iolani.frc.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.InterruptableSensorBase;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import java.util.Enumeration;
 import org.iolani.frc.RobotMap;
@@ -19,14 +19,15 @@ import org.iolani.frc.util.InterruptWatcher;
  * @author jmalins
  */
 public class BallGrabber extends Subsystem {
-    private DoubleSolenoid _valve;
+    
+    private Solenoid      _valve;
     private DigitalInput  _sensor;
     
     // Interrupt watcher used for interrupt mode //
     private InterruptWatcher _watcher = null;
     
     public void init() {
-        _valve  = new DoubleSolenoid(RobotMap.ballGrabberValve1, RobotMap.ballGrabberValve2);
+        _valve  = new Solenoid(RobotMap.ballGrabberValve);
         _sensor = new DigitalInput(RobotMap.ballSensorDIO);
     }
 
@@ -35,7 +36,7 @@ public class BallGrabber extends Subsystem {
      * @return true if the grabber is grabbed
      */
     public boolean isGrabbed() {
-        return _valve.get() == DoubleSolenoid.Value.kForward;
+        return _valve.get();
     }
     
     /**
@@ -45,7 +46,7 @@ public class BallGrabber extends Subsystem {
      */
     public boolean setGrabbed(boolean grabbed) {
         boolean old = this.isGrabbed();
-        _valve.set(grabbed ? DoubleSolenoid.Value.kForward: DoubleSolenoid.Value.kReverse);
+        _valve.set(grabbed);
         return old;
     }
     

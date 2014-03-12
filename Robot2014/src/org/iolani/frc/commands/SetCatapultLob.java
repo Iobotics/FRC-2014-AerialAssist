@@ -9,37 +9,21 @@ package org.iolani.frc.commands;
  *
  * @author jmalins
  */
-public class SetCatapultLatched extends CommandBase {
+public class SetCatapultLob extends CommandBase {
     
-    private final boolean _latched;
-    private final double  _delaySec;
-    private boolean _changed;
+    private final boolean _lob;
     
-    /**
-     * Constructor. Set the Catapult's latched state with a delay.
-     * @param latched - the new latched value
-     * @param delayMs - delay (in milliseconds) if the value is different than 
-     *                  the current value
-     */
-    public SetCatapultLatched(boolean latched, int delayMs) {
-        _latched  = latched;
-        _delaySec = delayMs / 1000.0;
+    public SetCatapultLob(boolean lob) {
+        _lob = lob;
         // Use requires() here to declare subsystem dependencies
         requires(catapult);
-    }
-    
-    /**
-     * Constructor. Set the Catapult's latched state with no delay.
-     * @param latched
-     */
-    public SetCatapultLatched(boolean latched) {
-        this(latched, 0);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        boolean old = catapult.setLatched(_latched);
-        _changed = (old != _latched);
+        if(catapult.isLob() != _lob) {
+            catapult.setLob(_lob);   
+        }
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -48,7 +32,7 @@ public class SetCatapultLatched extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return !_changed || (this.timeSinceInitialized() >= _delaySec);
+        return true;
     }
 
     // Called once after isFinished returns true

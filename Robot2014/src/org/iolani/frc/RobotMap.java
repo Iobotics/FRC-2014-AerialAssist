@@ -12,22 +12,21 @@ public class RobotMap {
     public static final int driveLeftRearPWM   = 9;
     public static final int driveRightFrontPWM = 1;
     public static final int driveRightRearPWM  = 2;
-    public static final int driveValve1        = 1;
-    public static final int driveValve2        = 2;
-
-    // intake //
-    public static final int intakeLeftPWM = 3;
-    public static final int intakeRightPWM = 4;
+    public static final int driveModeValve     = 1;
     
-    public static final int intakeValve = 6;
+    // intake //
+    public static final int intakeLeftPWM     = 3;
+    public static final int intakeRightPWM    = 4;
+    public static final int intakeDeployValve = 6;
     
     // ball grabber //
-    public static final int ballGrabberValve1 = 3;
-    public static final int ballGrabberValve2 = 4;
-    public static final int ballSensorDIO     = 13;
+    public static final int ballGrabberValve = 3;
+    public static final int ballSensorDIO    = 13;
     
     // catapult //
-    public static final int catapultLatchValve = 5;
+    public static final int catapultSwitchDIO  = 2;
+    public static final int catapultSensorADC  = 1;
+    public static final int catapultProngValve = 5;
     
     // penumatics //
     public static final int compressorRelay   = 1;

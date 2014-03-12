@@ -24,7 +24,7 @@ public class Intake extends Subsystem {
         _lVictor = new Victor(RobotMap.intakeLeftPWM);
         _rVictor = new Victor(RobotMap.intakeRightPWM);
         
-        _valve = new Solenoid(RobotMap.intakeValve);
+        _valve = new Solenoid(RobotMap.intakeDeployValve);
     }
     
     /**

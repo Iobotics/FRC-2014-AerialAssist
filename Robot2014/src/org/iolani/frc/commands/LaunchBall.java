@@ -18,6 +18,6 @@ public class LaunchBall extends CommandGroup {
      */
     public LaunchBall() {
         this.addSequential(new SetBallGrabber(false, 250)); // set ball grabber with delay //
-        this.addSequential(new SetCatapultLatched(false));
+        //this.addSequential(new SetCatapultLatched(false));
     }
 }

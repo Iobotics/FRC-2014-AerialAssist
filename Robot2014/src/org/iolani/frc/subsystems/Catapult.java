@@ -4,10 +4,12 @@
  */
 package org.iolani.frc.subsystems;
 
+import edu.wpi.first.wpilibj.AnalogChannel;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.iolani.frc.RobotMap;
-import org.iolani.frc.commands.SetCatapultLatched;
+import org.iolani.frc.commands.SetCatapultLob;
 
 /**
  *
@@ -15,26 +17,38 @@ import org.iolani.frc.commands.SetCatapultLatched;
  */
 public class Catapult extends Subsystem {
     
-    private Solenoid _valve;
+    private AnalogChannel _positionSensor;
+    private DigitalInput  _limitSwitch;
+    private Solenoid      _prongValve;
     
     /**
      * Initialize the catapult.
      */
     public void init() {
-        _valve = new Solenoid(RobotMap.catapultLatchValve);
+        _positionSensor = new AnalogChannel(RobotMap.catapultSensorADC);
+        _limitSwitch    = new DigitalInput(RobotMap.catapultSwitchDIO);
+        _prongValve     = new Solenoid(RobotMap.catapultProngValve);
     }
     
-    public boolean setLatched(boolean latched) {
-        boolean old = isLatched();
-        _valve.set(!latched);
+    public double getPositionDegrees() {
+        return _positionSensor.getVoltage() * 360.0 / 5.0;
+    }
+    
+    public boolean isRetracted() {
+        return _limitSwitch.get();
+    }
+    
+    public boolean setLob(boolean lob) {
+        boolean old = isLob();
+        _prongValve.set(!lob);
         return old;
     }
     
-    public boolean isLatched() {
-        return !_valve.get();
+    public boolean isLob() {
+        return !_prongValve.get();
     }
     
     public void initDefaultCommand() {
-        setDefaultCommand(new SetCatapultLatched(true));
+        setDefaultCommand(new SetCatapultLob(false));
     }
 }

@@ -5,6 +5,7 @@
 package org.iolani.frc.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.iolani.frc.RobotMap;
@@ -20,7 +21,7 @@ public class Drivetrain extends Subsystem {
     private Victor _rfVictor;
     private Victor _rrVictor;
     
-    private DoubleSolenoid _valve;
+    private Solenoid _valve;
     
     private RobotDrive _drive;
     // Put methods for controlling this subsystem
@@ -32,7 +33,7 @@ public class Drivetrain extends Subsystem {
         _rfVictor = new Victor(RobotMap.driveRightFrontPWM);
         _rrVictor = new Victor(RobotMap.driveRightRearPWM);
         
-        _valve = new DoubleSolenoid(RobotMap.driveValve1, RobotMap.driveValve2);
+        _valve = new Solenoid(RobotMap.driveModeValve);
         
         _drive = new RobotDrive(_lfVictor, _lrVictor, _rfVictor, _rrVictor);
         _drive.setSafetyEnabled(false);
@@ -73,11 +74,11 @@ public class Drivetrain extends Subsystem {
             _drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, false);
             _drive.setInvertedMotor(RobotDrive.MotorType.kRearRight,  false);
         }
-        _valve.set(mecanum? DoubleSolenoid.Value.kForward: DoubleSolenoid.Value.kReverse);
+        _valve.set(mecanum);
     }
     
     public boolean isMecanumMode() {
-        return _valve.get() == DoubleSolenoid.Value.kForward;
+        return _valve.get();
     }
     
     public void initDefaultCommand() {
