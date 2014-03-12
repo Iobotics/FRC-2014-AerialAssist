@@ -11,7 +11,7 @@ import org.iolani.frc.commands.IntakeAndGrabBall;
 import org.iolani.frc.commands.LaunchBall;
 import org.iolani.frc.commands.OperateTractionDrive;
 import org.iolani.frc.commands.SetBallGrabber;
-import org.iolani.frc.commands.SetIntakePosition;
+import org.iolani.frc.commands.SetIntakeDeployed;
 import org.iolani.frc.commands.SetVariableIntakePower;
 import org.iolani.frc.util.PowerScaler;
 
@@ -49,8 +49,8 @@ public class OI {
         _fireButton.whileHeld(new LaunchBall());
         _catchButton.whenPressed(new GrabBallWhenSensed());
         _tankDriveButton.whileHeld(new OperateTractionDrive());
-        _raiseIntakeButton.whenPressed(new SetIntakePosition(false));
-        _lowerIntakeButton.whenPressed(new SetIntakePosition(true));
+        _raiseIntakeButton.whenPressed(new SetIntakeDeployed(false));
+        _lowerIntakeButton.whenPressed(new SetIntakeDeployed(true));
         
         _grabButton.whileHeld(new SetBallGrabber(true));
         _cancelArmButton.whenPressed(new SetBallGrabber(false));

@@ -28,18 +28,18 @@ public class Intake extends Subsystem {
     }
     
     /**
-     * Set the pneumatic valve
+     * Set whether the intake is deployed.
      * @param down - true for down, false for up
      */
-    public void setValve(boolean down) {
+    public void setDeployed(boolean down) {
         _valve.set(down);
     }
     
     /**
-     * Get the intake valve position
+     * Get whether the intake is deployed.
      * @return - the current intake valve position
      */
-    public boolean getValve() {
+    public boolean getDeployed() {
         return _valve.get();
     }
     
@@ -65,6 +65,6 @@ public class Intake extends Subsystem {
     
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new SetIntakePower(0.0));
+        this.setDefaultCommand(new SetIntakePower(0.0));
     }
 }
