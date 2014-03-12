@@ -12,16 +12,22 @@ package org.iolani.frc.commands;
 public class SetCatapultLob extends CommandBase {
     
     private final boolean _lob;
+    private final double  _delaySec;
+    private boolean _changed;
     
-    public SetCatapultLob(boolean lob) {
+    public SetCatapultLob(boolean lob, double delayMs) {
         _lob = lob;
+        _delaySec = delayMs / 1000.0;
     }
 
+    public SetCatapultLob(boolean lob) {
+        this(lob, 0.0);
+    }
+    
     // Called just before this Command runs the first time
     protected void initialize() {
-        if(catapult.isLob() != _lob) {
-            catapult.setLob(_lob);   
-        }
+        boolean old = catapult.setLob(_lob);
+        _changed = (old != _lob);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -30,7 +36,7 @@ public class SetCatapultLob extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return !_changed || (this.timeSinceInitialized() >= _delaySec);
     }
 
     // Called once after isFinished returns true
