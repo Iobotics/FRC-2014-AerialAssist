@@ -6,6 +6,7 @@
 package org.iolani.frc.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 /**
  *
@@ -18,6 +19,8 @@ public class LaunchBall extends CommandGroup {
      */
     public LaunchBall() {
         this.addSequential(new SetBallGrabber(false, 250)); // set ball grabber with delay //
-        //this.addSequential(new SetCatapultLatched(false));
+        this.addParallel(new SetCatapultWinchPower(0.0)); // disable winch PID //
+        this.addParallel(new SetCatapultLatched(false));
+        this.addSequential(new WaitCommand(1.0)); // wait for shot
     }
 }
