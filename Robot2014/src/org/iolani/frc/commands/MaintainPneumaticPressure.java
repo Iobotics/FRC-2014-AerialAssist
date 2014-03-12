@@ -8,9 +8,9 @@ package org.iolani.frc.commands;
  *
  * @author wkd
  */
-public class RunCompressor extends CommandBase {
+public class MaintainPneumaticPressure extends CommandBase {
     
-    public RunCompressor() {
+    public MaintainPneumaticPressure() {
         this.requires(pneumatics);
         this.setRunWhenDisabled(true);
     }

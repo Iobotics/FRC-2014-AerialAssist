@@ -7,8 +7,7 @@ package org.iolani.frc.subsystems;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.iolani.frc.RobotMap;
-import org.iolani.frc.commands.RunCompressor;
-import org.iolani.frc.util.Utility;
+import org.iolani.frc.commands.MaintainPneumaticPressure;
 
 /**
  *
@@ -41,6 +40,6 @@ public class Pneumatics extends Subsystem {
     }
     
     public void initDefaultCommand() {
-        this.setDefaultCommand(new RunCompressor());
+        this.setDefaultCommand(new MaintainPneumaticPressure());
     }
 }
