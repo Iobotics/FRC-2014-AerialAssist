@@ -15,8 +15,6 @@ public class SetCatapultLob extends CommandBase {
     
     public SetCatapultLob(boolean lob) {
         _lob = lob;
-        // Use requires() here to declare subsystem dependencies
-        requires(catapult);
     }
 
     // Called just before this Command runs the first time
