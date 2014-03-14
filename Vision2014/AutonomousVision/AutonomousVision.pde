@@ -10,9 +10,10 @@ private static int camHeight = 240;
 
 int currentPixel; //The array index of the pixel we're looking at
 int greenPixelCount; //The number of pixels that are registered as green
-PImage inputImage;
-PImage greenFiltered;
-IPCapture cam;
+PImage greenFiltered; //New black and white image based on the green pixels
+IPCapture cam; //Frame from the camera
+
+BlobDetection blobDetector = new BlobDetection(camWidth, camHeight);
 
 void setup(){
   println("Initializing...");
@@ -21,9 +22,7 @@ void setup(){
   size(camWidth, camHeight);
 }
 
-void draw(){
-  greenPixelCount = 0;
-  
+void draw(){  
   if(cam.isAvailable()) {
     cam.read();   
     image(cam,0,0);
@@ -40,15 +39,23 @@ void draw(){
              && (red(cam.pixels[currentPixel]) < _noncolor_threshold)) { //Makes sure each pixel has a sufficient amount of green, and not too much red / blue
           greenPixelCount++;
           stroke(255, 0, 0);
-          greenFiltered.pixels[currentPixel] = color(0, 0, 0);
+          greenFiltered.pixels[currentPixel] = color(0, 0, 0); //Map all green points to black on the new image
           point(x,y); //===FOR DEBUGGING: Puts a point at every point detected as green
         } else {
-          greenFiltered.pixels[currentPixel] = color(255, 255, 255);
+          greenFiltered.pixels[currentPixel] = color(255, 255, 255); //Map all nongreen points to white on the new image
         }
       }
+    }
+    blobDetector.computeBlobs(greenFiltered.pixels); //Compute blobs on the new image
+    Blob[] blobArray = new Blob[blobDetector.getBlobNb()];
+    Scores[] scoresArray = new Scores[blobArray.length]; //Holds info about each blob
+    for(int i = 0; i < blobArray.length; i++){
+      
     }
   }
   greenFiltered.updatePixels();
 }
 
-
+double computeRectangularity(Blob blob){
+  
+}
