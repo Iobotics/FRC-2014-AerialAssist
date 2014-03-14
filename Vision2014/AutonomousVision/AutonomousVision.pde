@@ -4,9 +4,9 @@ import blobDetection.*;
 private static final int _color_threshold = 170; //How far the color can be from green to be registered as a point
 private static final int _noncolor_threshold = 150; //blue and red values need to be LESS than this in order to qualify a pixel as truly red
 
-// need method to autocalc and verify photo boundaries
-private static int camWidth = 320;
-private static int camHeight = 240;
+// Using AXIS 206 camera's lowest quality size to speed up image processing
+private static final int camWidth = 320;
+private static final int camHeight = 240;
 
 int currentPixel; //The array index of the pixel we're looking at
 int greenPixelCount; //The number of pixels that are registered as green
