@@ -133,7 +133,7 @@ public class Catapult extends Subsystem implements PIDSource {
      */
     public boolean setLob(boolean lob) {
         boolean old = isLob();
-        _prongValve.set(!lob);
+        _prongValve.set(lob);
         return old;
     }
     
@@ -142,7 +142,7 @@ public class Catapult extends Subsystem implements PIDSource {
      * @return true if lob mode is enabled
      */
     public boolean isLob() {
-        return !_prongValve.get();
+        return _prongValve.get();
     }
     
     /**

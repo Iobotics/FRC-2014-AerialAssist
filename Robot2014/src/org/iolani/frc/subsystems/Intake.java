@@ -50,8 +50,8 @@ public class Intake extends Subsystem {
      */
     public double setPower(double pwr) {
         double old = this.getPower();
-        _lVictor.set(pwr);
-        _rVictor.set(-pwr);
+        _lVictor.set(-pwr);
+        _rVictor.set(pwr);
         return old;
     }
     
