@@ -95,7 +95,7 @@ public class GrabBallWhenSensed extends CommandBase implements BallGrabber.BallS
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         // run continuously until interrupted //
-        return false;
+        return _state == sGRABBED;
     }
 
     // Called once after isFinished returns true

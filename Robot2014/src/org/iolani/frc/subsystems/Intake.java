@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.iolani.frc.RobotMap;
-import org.iolani.frc.commands.SetIntakePower;
+import org.iolani.frc.commands.DefendIntake;
 
 /**
  *
@@ -65,6 +65,6 @@ public class Intake extends Subsystem {
     
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        this.setDefaultCommand(new SetIntakePower(0.0));
+        this.setDefaultCommand(new DefendIntake());
     }
 }

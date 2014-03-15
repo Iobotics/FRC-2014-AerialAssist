@@ -19,7 +19,9 @@ public class IntakeAndGrabBall extends CommandGroup {
      * CommandGroup will exit once ball has been grabbed.
      */
     public IntakeAndGrabBall() {
-        this.addParallel(new SetVariableIntakePower(true));
-        this.addParallel(new StartCommand(new GrabBallWhenSensed()));
+        this.addParallel(new SetIntakeDeployed(true));
+        this.addParallel(new SetIntakePower(0.75));
+        this.addParallel(new SetBallGrabber(true));
+        this.addParallel(new GrabBallWhenSensed());
     }
 }
