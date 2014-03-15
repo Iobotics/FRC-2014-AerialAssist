@@ -1,41 +1,28 @@
-import hypermedia.video.*;
 import edu.wpi.first.wpilibj.*;
+import blobDetection.*;
 
 private static final int _color_threshold = 170; //How far the color can be from green to be registered as a point
 private static final int _noncolor_threshold = 150; //blue and red values need to be LESS than this in order to qualify a pixel as truly red
-private static final int _requiredPixelsPercentage = 70; //What percent of the examined pixels need to be green in order to register as true
-//STUFF
-private static int boundingLeft = 0;
-private static int boundingRight;
-private static int boundingTop = 0;
-private static int boundingBottom;
-private static int boundedArea;
-// need method to autocalc and verify photo boundaries
-private static int camWidth = 320;
-private static int camHeight = 240;
+
+// Using AXIS 206 camera's lowest quality size to speed up image processing
+private static final int camWidth = 320;
+private static final int camHeight = 240;
 
 int currentPixel; //The array index of the pixel we're looking at
 int greenPixelCount; //The number of pixels that are registered as green
-PImage inputImage;
-PImage greenFiltered;
-IPCapture cam;
+PImage greenFiltered; //New black and white image based on the green pixels
+IPCapture cam; //Frame from the camera
 
-Blob[] allBlobs;
+BlobDetection blobDetector = new BlobDetection(camWidth, camHeight);
 
 void setup(){
   println("Initializing...");
   greenFiltered = cam = new IPCapture(this, "http://10.24.38.11/mjpg/video.mjpg", "", "");
-  cam.start();
-  
-  boundingRight = camWidth; //===FOR DEBUGGING: Looking at whole canvas instead of small portion (like we will later)
-  boundingBottom = camHeight;
-  boundedArea = (boundingRight - boundingLeft) * (boundingBottom - boundingTop); //Area of bounded region
-  size(320, 240);
+  cam.start();  
+  size(camWidth, camHeight);
 }
 
-void draw(){
-  greenPixelCount = 0;
-  
+void draw(){  
   if(cam.isAvailable()) {
     cam.read();   
     image(cam,0,0);
@@ -44,29 +31,31 @@ void draw(){
   greenFiltered.loadPixels();
   
   if(cam.pixels.length > 0){
-    for(int x = boundingLeft; x < boundingRight; x++) { //Iterate through each column, beginning with boundingLeft and ending with boundingBottom
-      for(int y = boundingTop; y < boundingBottom; y++){ //Iterate through each row, beginning with the boundingTop row and ending at boundingBottom 
+    for(int x = 0; x < camWidth; x++) { //Iterate through each column
+      for(int y = 0; y < camHeight; y++){ //Iterate through each row
         currentPixel = x + (y * cam.width);
         if((green(cam.pixels[currentPixel]) > _color_threshold) 
              && (blue(cam.pixels[currentPixel]) < _noncolor_threshold) 
              && (red(cam.pixels[currentPixel]) < _noncolor_threshold)) { //Makes sure each pixel has a sufficient amount of green, and not too much red / blue
           greenPixelCount++;
           stroke(255, 0, 0);
-          greenFiltered.pixels[currentPixel] = color(0, 0, 0);
+          greenFiltered.pixels[currentPixel] = color(0, 0, 0); //Map all green points to black on the new image
           point(x,y); //===FOR DEBUGGING: Puts a point at every point detected as green
         } else {
-          greenFiltered.pixels[currentPixel] = color(255, 255, 255);
+          greenFiltered.pixels[currentPixel] = color(255, 255, 255); //Map all nongreen points to white on the new image
         }
       }
     }
+    blobDetector.computeBlobs(greenFiltered.pixels); //Compute blobs on the new image
+    Blob[] blobArray = new Blob[blobDetector.getBlobNb()];
+    Scores[] scoresArray = new Scores[blobArray.length]; //Holds info about each blob
+    for(int i = 0; i < blobArray.length; i++){
+      
+    }
   }
   greenFiltered.updatePixels();
-  /*
-  println("Total green pixels: " + greenPixelCount); //===FOR DEBUGGING: Print how many green pixels there are
-  println("Percentage of pixels that are green: " + ((greenPixelCount * 100) / boundedArea)); //===FOR DEBUGGING: Print what percentage of the pixels are green
-  */
-  allBlobs = OpenCV.blobs(1, greenPixelCount, 10, true); //Last value (findHoles) might want to be false... will test
-  
 }
 
-
+double computeRectangularity(Blob blob){
+  
+}
