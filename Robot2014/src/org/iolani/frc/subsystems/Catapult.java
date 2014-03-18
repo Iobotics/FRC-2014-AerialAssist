@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.iolani.frc.RobotMap;
-import org.iolani.frc.commands.ResetCatapult;
+import org.iolani.frc.commands.RetractCatapult;
 
 /**
  * Combined Catapult and Winch mechanism.
@@ -188,6 +188,6 @@ public class Catapult extends Subsystem implements PIDSource {
     }
     
     public void initDefaultCommand() {
-        setDefaultCommand(new ResetCatapult());
+        setDefaultCommand(new RetractCatapult());
     }
 }

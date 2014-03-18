@@ -12,7 +12,7 @@ import org.iolani.frc.commands.LaunchBall;
 import org.iolani.frc.commands.OperateTractionDrive;
 import org.iolani.frc.commands.PassBall;
 import org.iolani.frc.commands.SetBallGrabber;
-import org.iolani.frc.commands.SetCatapultLob;
+import org.iolani.frc.commands.EnableLobShot;
 import org.iolani.frc.util.PowerScaler;
 
 /**
@@ -58,24 +58,7 @@ public class OI {
         _defenseButton.whenPressed(new DefendRobot());
         // ball shooting
         _shootButton.whenPressed(new LaunchBall());
-        _lobButton.whileHeld(new SetCatapultLob(true));
-        
-        
-        
-        /* _suckButton.whileHeld(new IntakeAndGrabBall());
-        _fireButton.whileHeld(new LaunchBall());
-        _catchButton.whenPressed(new GrabBallWhenSensed());
-        _tankDriveButton.whileHeld(new OperateTractionDrive());
-        _raiseIntakeButton.whenPressed(new SetIntakeDeployed(false));
-        _lowerIntakeButton.whenPressed(new SetIntakeDeployed(true));
-        
-        _grabButton.whileHeld(new SetBallGrabber(true));
-        _cancelArmButton.whenPressed(new SetBallGrabber(false));
-        
-        CommandGroup blowGroup = new CommandGroup();
-        blowGroup.addParallel(new SetVariableIntakePower(false));
-        blowGroup.addParallel(new StartCommand(new SetBallGrabber(false)));
-        _blowButton.whileHeld(blowGroup); */
+        _lobButton.whileHeld(new EnableLobShot());
     }
     
     private PowerScaler _driveScaler;
