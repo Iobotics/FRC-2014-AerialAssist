@@ -14,9 +14,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class PassBall extends CommandGroup {
     
     public PassBall() {
-        this.addParallel(new SetIntakeDeployed(false));
-        this.addParallel(new SetIntakePower(-1.0));
         this.addParallel(new SetBallGrabber(false));
+        this.addSequential(new SetIntakeDeployed(false));
+        this.addSequential(new SetIntakePower(-1.0));
     }
     
 }

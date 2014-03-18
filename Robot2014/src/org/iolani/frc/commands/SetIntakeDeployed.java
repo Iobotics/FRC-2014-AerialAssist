@@ -42,4 +42,8 @@ public class SetIntakeDeployed extends CommandBase {
     protected void interrupted() {
         this.end();
     }
+    
+    public String getName() {
+        return super.getName() + "(" + _position + ")";
+    }
 }

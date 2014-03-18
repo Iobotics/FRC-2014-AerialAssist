@@ -6,7 +6,6 @@
 package org.iolani.frc.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.StartCommand;
 
 /**
  *
@@ -19,9 +18,8 @@ public class IntakeAndGrabBall extends CommandGroup {
      * CommandGroup will exit once ball has been grabbed.
      */
     public IntakeAndGrabBall() {
-        this.addParallel(new SetIntakeDeployed(true));
-        this.addParallel(new SetIntakePower(0.75));
-        this.addParallel(new SetBallGrabber(true));
-        this.addParallel(new GrabBallWhenSensed());
+        this.addParallel(new GrabBallWhenSensed(false)); // keep grab running
+        this.addSequential(new SetIntakeDeployed(true));
+        this.addSequential(new SetVariableIntakePower());
     }
 }

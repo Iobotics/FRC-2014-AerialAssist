@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class DefendIntake extends CommandGroup {
     
     public DefendIntake() {
-        this.addParallel(new SetIntakePower(0.0));
-        this.addParallel(new SetIntakeDeployed(false));
+        this.addSequential(new SetIntakePower(0.0));
+        this.addSequential(new SetIntakeDeployed(false));
     }
 }

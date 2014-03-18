@@ -12,7 +12,7 @@ import org.iolani.frc.util.PowerScaler;
  */
 public class OperateTractionDrive extends CommandBase {
     
-    private static final double DEADBAND = 0.05;
+    private static final double DEADBAND = 0.1;
         
     
     public OperateTractionDrive() {

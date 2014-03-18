@@ -12,8 +12,7 @@ import org.iolani.frc.util.*;
  */
 public class OperateMecanumDrive extends CommandBase {
     
-    private static final double DEADBAND  = 0.05;
-    private static final double SLOW_MODE = 0.3;
+    private static final double DEADBAND  = 0.1;
     
     public OperateMecanumDrive() {
         requires(drivetrain);
@@ -38,13 +37,6 @@ public class OperateMecanumDrive extends CommandBase {
         }
         if(Math.abs(mag) < DEADBAND) { mag = 0.0; }
         if(Math.abs(rot) < DEADBAND) { rot = 0.0; }
-        
-        /*
-        if(oi.getSlowModeButton()) {
-                mag = SLOW_MODE * mag;
-                rot = SLOW_MODE * rot;
-        }
-        */
         
         drivetrain.setMecanum(mag, dir, rot);
     }

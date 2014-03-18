@@ -16,7 +16,10 @@ public class AdjustBall extends CommandGroup {
     
     public AdjustBall() {
         this.addSequential(new SetBallGrabber(false));
-        this.addSequential(new WaitCommand(0.5));
+        this.addSequential(new SetIntakeDeployed(true));
+        this.addSequential(new WaitCommand(0.25));
         this.addSequential(new SetBallGrabber(true));
+        this.addSequential(new WaitCommand(0.25));
+        this.addSequential(new SetIntakeDeployed(false));
     }
 }

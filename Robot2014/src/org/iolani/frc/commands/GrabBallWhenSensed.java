@@ -16,18 +16,24 @@ import org.iolani.frc.subsystems.BallGrabber;
 public class GrabBallWhenSensed extends CommandBase implements BallGrabber.BallSensedListener {
     // states //
     private static final int sOPEN    = 1;
-    private static final int sWAITING = 2;
-    private static final int sCLOSE   = 3;
-    private static final int sGRABBED = 4;
+    private static final int sDELAY   = 2;
+    private static final int sWAITING = 3;
+    private static final int sCLOSE   = 4;
+    private static final int sGRABBED = 5;
     
+    private static final double OPEN_DELAY = 0.25;
+    
+    private final boolean _quitWhenGrabbed;
     private final boolean _async;
     private int _state;
     
     /**
      * Constructor
+     * @param quitWhenGrabbed - should the command terminate when a ball is grabbed
      * @param async - use asynchronous notification 
      */
-    public GrabBallWhenSensed(boolean async) {
+    public GrabBallWhenSensed(boolean quitWhenGrabbed, boolean async) {
+        _quitWhenGrabbed = quitWhenGrabbed;
         _async = async;
         // Use requires() here to declare subsystem dependencies
         requires(ballGrabber);
@@ -35,23 +41,22 @@ public class GrabBallWhenSensed extends CommandBase implements BallGrabber.BallS
 
     /**
      * Constructor.
+     * @param quitWhenGrabbed - should the command terminate when a ball is grabbed
+     */
+    public GrabBallWhenSensed(boolean quitWhenGrabbed) {
+        this(quitWhenGrabbed, false);
+    }
+    
+    /**
+     * Constructor.
      */
     public GrabBallWhenSensed() {
-        this(false);
+        this(true, false);
     }
     
     // Called just before this Command runs the first time
     protected void initialize() {
-        // Grabbed | Ball | Actions
-        //    N       N      Wait
-        //    N       Y      Close, Grabbed
-        //    Y       N      Open, Wait
-        //    Y       Y      Grabbed
-        if(ballGrabber.isGrabbed()) { 
-            _state = ballGrabber.isBallSensed() ? sGRABBED : sOPEN;
-        } else {
-            _state = ballGrabber.isBallSensed() ? sCLOSE : sWAITING;
-        }
+        _state = sOPEN;
         
         // add ourselves as a listener if in async mode //
         if(_async) {
@@ -66,7 +71,12 @@ public class GrabBallWhenSensed extends CommandBase implements BallGrabber.BallS
         switch(_state) {
             case sOPEN:
                 ballGrabber.setGrabbed(false);
-                _state = sWAITING;
+                _state = sDELAY;
+                break;
+            case sDELAY:
+                if(this.timeSinceInitialized() > OPEN_DELAY) {
+                    _state = sWAITING;
+                }
                 break;
             case sWAITING:
                 // if we are in async mode, the ball sensing happens via a //
@@ -95,7 +105,7 @@ public class GrabBallWhenSensed extends CommandBase implements BallGrabber.BallS
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         // run continuously until interrupted //
-        return _state == sGRABBED;
+        return _quitWhenGrabbed && _state == sGRABBED;
     }
 
     // Called once after isFinished returns true
