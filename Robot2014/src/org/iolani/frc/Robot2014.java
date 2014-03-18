@@ -11,6 +11,7 @@ package org.iolani.frc;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.iolani.frc.commands.CommandBase;
 
 /**
@@ -33,6 +34,7 @@ public class Robot2014 extends IterativeRobot {
 
         // Initialize all subsystems
         CommandBase.init();
+        SmartDashboard.putData(Scheduler.getInstance());
     }
 
     public void autonomousInit() {
