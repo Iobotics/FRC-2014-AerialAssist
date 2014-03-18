@@ -63,8 +63,9 @@ public class BallGrabber extends Subsystem {
      * Set the default behavior.
      */
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        setDefaultCommand(new SetBallGrabber(false));
+        // Default grabber to grabbed to match up with the ball grabber //
+        // part of DefendRobot.                                         //
+        setDefaultCommand(new SetBallGrabber(true));
     }
     
     /**
