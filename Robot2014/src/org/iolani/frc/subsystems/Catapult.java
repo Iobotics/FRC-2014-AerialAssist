@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.iolani.frc.RobotMap;
 import org.iolani.frc.commands.RetractCatapult;
 
@@ -45,6 +46,8 @@ public class Catapult extends Subsystem implements PIDSource {
         _pid.setInputRange(-5.0, 95.0);
         _pid.setOutputRange(0, 1.0); // only send positive values //
         _pid.setPercentTolerance(5.0);
+        
+        SmartDashboard.putData("catapult-pid", _pid);
     }
     
     /**
@@ -52,6 +55,10 @@ public class Catapult extends Subsystem implements PIDSource {
      */
     public double getPositionDegrees() {
         return _positionSensor.getVoltage() * 360.0 / 5.0;
+    }
+    
+    public double getPositionSensor() {
+        return _positionSensor.getVoltage();
     }
     
     /**
