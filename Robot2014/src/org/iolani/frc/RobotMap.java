@@ -24,7 +24,7 @@ public class RobotMap {
     public static final int ballSensorDIO    = 1;
     
     // catapult //
-    public static final int catapultSwitchDIO  = 2;
+    public static final int catapultSwitchDIO  = 13;
     public static final int catapultSensorADC  = 1;
     public static final int catapultProngValve = 4;
     public static final int catapultWinchPWM   = 8;
