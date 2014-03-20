@@ -11,7 +11,7 @@ package org.iolani.frc.commands;
 public class SetBallGrabber extends CommandBase {
     
     private final boolean _value;
-    private final double  _delaySec;
+    private final double  _delaySec; // negative for sticky mode //
     private boolean _changed;
     
     /**
@@ -25,6 +25,10 @@ public class SetBallGrabber extends CommandBase {
         _delaySec = delayMs / 1000.0;
         // Use requires() here to declare subsystem dependencies
         requires(ballGrabber);
+    }
+    
+    public SetBallGrabber(boolean value, boolean sticky) {
+        this(value, sticky? -1: 0);
     }
     
     /**
@@ -47,6 +51,7 @@ public class SetBallGrabber extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+        if(_delaySec < 0) return false;
         return !_changed || (this.timeSinceInitialized() >= _delaySec);
     }
 

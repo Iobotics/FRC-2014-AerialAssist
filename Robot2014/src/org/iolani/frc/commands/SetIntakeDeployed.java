@@ -11,10 +11,15 @@ package org.iolani.frc.commands;
 public class SetIntakeDeployed extends CommandBase {
     
     private final boolean _position;
+    private final boolean _sticky;
     
-    public SetIntakeDeployed(boolean down) {
-        requires(intake);
+    public SetIntakeDeployed(boolean down, boolean sticky) {
         _position = down;
+        _sticky   = sticky;
+        requires(intake);
+    }
+    public SetIntakeDeployed(boolean down) {
+        this(down, false);
     }
 
     // Called just before this Command runs the first time
@@ -30,7 +35,7 @@ public class SetIntakeDeployed extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return !_sticky;
     }
 
     // Called once after isFinished returns true
@@ -44,6 +49,6 @@ public class SetIntakeDeployed extends CommandBase {
     }
     
     public String getName() {
-        return super.getName() + "(" + _position + ")";
+        return super.getName() + "(" + _position + ", " + _sticky + ")";
     }
 }
