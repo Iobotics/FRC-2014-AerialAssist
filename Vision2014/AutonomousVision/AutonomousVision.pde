@@ -56,6 +56,28 @@ void draw(){
   greenFiltered.updatePixels();
 }
 
-double computeRectangularity(Blob blob){
-  
+double computeRectangularity(Blob blob){ //Returns proportional rectangularity; i.e. blob area / bounding box area
+  //return blobArea(blob) / 
+}
+
+double blobArea(Blob blob){ //Returns the combined area of all triangles in a blob
+  EdgeVertex point1; //Points that make up each triangle
+  EdgeVertex point2;
+  EdgeVertex point3;
+  float length1; //Lengths of each triangle's edge
+  float length2;
+  float length3;
+  float semiperimiter;
+  double totalArea = 0;
+  for(int i = 0; i < blob.getTriangleNb(); i++){ //Uses Hero's Formula to get the area of each triangle
+    point1 = blob.getTriangleVertexA(blob.getTriangle(0));
+    point2 = blob.getTriangleVertexB(blob.getTriangle(0));
+    point3 = blob.getTriangleVertexA(blob.getTriangle(0));
+    length1 = dist(point1.x, point1.y, point2.x, point2.y);
+    length2 = dist(point1.x, point1.y, point3.x, point3.y);
+    length3 = dist(point2.x, point2.y, point3.x, point3.y);
+    semiperimiter = (length1 + length2 + length3) / 2;
+    totalArea += sqrt(semiperimiter * (semiperimiter - length1) * (semiperimiter - length2) * (semiperimiter - length3));
+  }
+  return totalArea;
 }
