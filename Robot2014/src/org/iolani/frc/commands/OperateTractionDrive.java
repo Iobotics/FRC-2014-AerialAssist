@@ -12,8 +12,7 @@ import org.iolani.frc.util.PowerScaler;
  */
 public class OperateTractionDrive extends CommandBase {
     
-    private static final double DEADBAND = 0.1;
-        
+    //private static final double DEADBAND = 0.1;  
     
     public OperateTractionDrive() {
         requires(drivetrain);
@@ -34,8 +33,8 @@ public class OperateTractionDrive extends CommandBase {
             mag = scale.get(mag);
             rot = scale.get(rot);
         }
-        if(Math.abs(mag) < DEADBAND) { mag = 0.0; }
-        if(Math.abs(rot) < DEADBAND) { rot = 0.0; }
+        //if(Math.abs(mag) < DEADBAND) { mag = 0.0; }
+        //if(Math.abs(rot) < DEADBAND) { rot = 0.0; }
         
         drivetrain.setArcade(mag, rot);
     }

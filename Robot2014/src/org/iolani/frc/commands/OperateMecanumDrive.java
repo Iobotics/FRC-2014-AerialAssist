@@ -12,7 +12,7 @@ import org.iolani.frc.util.*;
  */
 public class OperateMecanumDrive extends CommandBase {
     
-    private static final double DEADBAND  = 0.1;
+    //private static final double DEADBAND  = 0.1;
     
     public OperateMecanumDrive() {
         requires(drivetrain);
@@ -35,8 +35,8 @@ public class OperateMecanumDrive extends CommandBase {
             mag = scale.get(mag);
             rot = scale.get(rot);
         }
-        if(Math.abs(mag) < DEADBAND) { mag = 0.0; }
-        if(Math.abs(rot) < DEADBAND) { rot = 0.0; }
+        //if(Math.abs(mag) < DEADBAND) { mag = 0.0; }
+        //if(Math.abs(rot) < DEADBAND) { rot = 0.0; }
         
         drivetrain.setMecanum(mag, dir, rot);
     }

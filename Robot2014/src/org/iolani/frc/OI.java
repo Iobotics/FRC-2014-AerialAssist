@@ -13,6 +13,7 @@ import org.iolani.frc.commands.OperateTractionDrive;
 import org.iolani.frc.commands.PassBall;
 import org.iolani.frc.commands.SetBallGrabber;
 import org.iolani.frc.commands.EnableLobShot;
+import org.iolani.frc.commands.SetIntakeDeployed;
 import org.iolani.frc.util.PowerScaler;
 
 /**
@@ -29,13 +30,16 @@ public class OI {
     private final Button _passButton = new JoystickButton(_lStick, 3);
     private final Button _cancelGrabButton = new JoystickButton(_lStick, 5);
     private final Button _lockTractionButton = new JoystickButton(_lStick, 7);
+    private final Button _grabberCloseButton = new JoystickButton(_lStick, 8);
+    private final Button _grabberOpenButton = new JoystickButton(_lStick, 9);
     
     private final Button _shootButton = new JoystickButton(_rStick, 1);
     private final Button _intakeButton = new JoystickButton(_rStick, 3);
     private final Button _lobButton = new JoystickButton(_rStick, 4);
     private final Button _ballAdjustButton = new JoystickButton(_rStick, 5);
     private final Button _defenseButton = new JoystickButton(_rStick, 10);
-    
+    private final Button _intakeUpButton = new JoystickButton(_rStick, 8);
+    private final Button _intakeDownButton = new JoystickButton(_rStick, 9);
 
     public Joystick getLeftStick() {
         return _lStick;
@@ -45,6 +49,8 @@ public class OI {
         return _rStick;
     }
     
+    private PowerScaler _driveScaler;
+        
     public OI() {
         // traction mode
         _tractionButton.whileHeld(new OperateTractionDrive());
@@ -56,12 +62,21 @@ public class OI {
         _cancelGrabButton.whileHeld(new SetBallGrabber(false));
         _ballAdjustButton.whenPressed(new AdjustBall());
         _defenseButton.whenPressed(new DefendRobot());
+        _grabberOpenButton.whenPressed(new SetBallGrabber(false, true));
+        _grabberCloseButton.whenPressed(new SetBallGrabber(true, true));
+        _intakeUpButton.whenPressed(new SetIntakeDeployed(false, true));
+        _intakeDownButton.whenPressed(new SetIntakeDeployed(true, true));
         // ball shooting
         _shootButton.whenPressed(new LaunchBall());
         _lobButton.whileHeld(new EnableLobShot());
+        
+        // power scalar from 2013 //
+        _driveScaler = new PowerScaler(new PowerScaler.PowerPoint[] {
+                new PowerScaler.PowerPoint(0.05, 0.0),
+                new PowerScaler.PowerPoint(0.65, 0.5),
+                new PowerScaler.PowerPoint(0.80, 1.0)
+            });
     }
-    
-    private PowerScaler _driveScaler;
     
     public PowerScaler getDriveScaler() {
         return _driveScaler;
