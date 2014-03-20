@@ -24,15 +24,15 @@ public class SetVariableIntakePower extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    }
+
+    // Called repeatedly when this Command is scheduled to run
+    protected void execute() {
         if(_inward) {
             intake.setPower(oi.getVariableIntakePower());
         } else {
             intake.setPower(-oi.getVariableIntakePower());
         }
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
     }
 
     // Make this return true when this Command no longer needs to run execute()
