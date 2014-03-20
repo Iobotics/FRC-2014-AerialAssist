@@ -62,10 +62,14 @@ public class Utility {
         }
     }
     
-    public static double window(double input, double max) {
-        if(input >  max) return  max;
-        if(input < -max) return -max;
+    public static double window(double input, double min, double max) {
+        if(input < min) return min;
+        if(input > max) return max;
         return input;
+    }
+    
+    public static double window(double input, double max) {
+        return Utility.window(input, -max, max);
     }
     
     public static double sign(double input) {
