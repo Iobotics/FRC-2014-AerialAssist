@@ -8,12 +8,14 @@ import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.iolani.frc.RobotMap;
 import org.iolani.frc.commands.RetractCatapult;
+import org.iolani.frc.util.Utility;
 
 /**
  * Combined Catapult and Winch mechanism.
@@ -27,10 +29,15 @@ public class Catapult extends Subsystem implements PIDSource {
     private Victor        _winchVictor;
     private Solenoid      _winchValve;
     private PIDController _pid;
+    private double _up_volts;
+    private double _down_volts;
     
-    private static final double kP = 0.2;
-    private static final double kI = 0.0;
-    private static final double kD = 0.0;
+    private static final double kP_DEFAULT = 0.2;
+    private static final double kI_DEFAULT = 0.0;
+    private static final double kD_DEFAULT = 0.0;
+    
+    private static final double UP_VOLTS_DEFAULT   = 0.7;
+    private static final double DOWN_VOLTS_DEFAULT = 4.3; 
     
     /**
      * Initialize the catapult.
@@ -42,19 +49,27 @@ public class Catapult extends Subsystem implements PIDSource {
         _winchVictor    = new Victor(RobotMap.catapultWinchPWM);
         _winchValve     = new Solenoid(RobotMap.catapultWinchValve);
         
+        Preferences prefs = Preferences.getInstance();
+        double kP = prefs.getDouble("catapult.kP", kP_DEFAULT);
+        double kI = prefs.getDouble("catapult.kI", kI_DEFAULT);
+        double kD = prefs.getDouble("catapult.kD", kD_DEFAULT);
+        
         _pid = new PIDController(kP, kI, kD, this, _winchVictor);
         _pid.setInputRange(-5.0, 95.0);
         _pid.setOutputRange(0, 1.0); // only send positive values //
         _pid.setPercentTolerance(5.0);
-        
         SmartDashboard.putData("catapult-pid", _pid);
+        
+        _up_volts   = prefs.getDouble("catapult.ma3_up_volts",   UP_VOLTS_DEFAULT);
+        _down_volts = prefs.getDouble("catapult.ma3_down_volts", DOWN_VOLTS_DEFAULT);
     }
     
     /**
      * @return the catapult position in degrees, retracted is 0.0 degrees
      */
     public double getPositionDegrees() {
-        return _positionSensor.getVoltage() * 360.0 / 5.0;
+        double angle = (90 / (_up_volts - _down_volts)) * (this.getPositionSensor() - _down_volts);
+        return Utility.window(angle, 0.0, 90.0);
     }
     
     public double getPositionSensor() {
