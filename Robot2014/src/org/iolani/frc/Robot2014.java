@@ -66,7 +66,10 @@ public class Robot2014 extends IterativeRobot {
         Scheduler.getInstance().run();
         //System.out.println("Rstick's getThrottle() is: " + CommandBase.oi.getRightStick().getThrottle() + " and getTwist() is : " + CommandBase.oi.getRightStick().getTwist());
         SmartDashboard.putBoolean("catapult-limit-switch", CommandBase.catapult.isRetracted());
-        SmartDashboard.putNumber("catapult-position", CommandBase.catapult.getPositionSensor());
+        SmartDashboard.putNumber("catapult-volts", CommandBase.catapult.getPositionSensor());
+        SmartDashboard.putNumber("catapult-position", CommandBase.catapult.getPositionDegrees());
+        SmartDashboard.putNumber("catapult-winch-power", CommandBase.catapult.getWinchPower());
+        SmartDashboard.putNumber("catapult-error", CommandBase.catapult.getPositionError());
     }
     
     /**

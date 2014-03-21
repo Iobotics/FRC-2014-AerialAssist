@@ -7,6 +7,7 @@ package org.iolani.frc.subsystems;
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -21,7 +22,7 @@ import org.iolani.frc.util.Utility;
  * Combined Catapult and Winch mechanism.
  * @author iobotics
  */
-public class Catapult extends Subsystem implements PIDSource {
+public class Catapult extends Subsystem implements PIDSource, PIDOutput {
     
     private AnalogChannel _positionSensor;
     private DigitalInput  _limitSwitch;
@@ -54,9 +55,9 @@ public class Catapult extends Subsystem implements PIDSource {
         double kI = prefs.getDouble("catapult.kI", kI_DEFAULT);
         double kD = prefs.getDouble("catapult.kD", kD_DEFAULT);
         
-        _pid = new PIDController(kP, kI, kD, this, _winchVictor);
+        _pid = new PIDController(kP, kI, kD, this, this);
         _pid.setInputRange(-5.0, 95.0);
-        _pid.setOutputRange(0, 1.0); // only send positive values //
+        _pid.setOutputRange(-1.0, 0); // error will be negative //
         _pid.setPercentTolerance(5.0);
         SmartDashboard.putData("catapult-pid", _pid);
         
@@ -83,6 +84,13 @@ public class Catapult extends Subsystem implements PIDSource {
      */
     public double pidGet() {
         return this.getPositionDegrees();
+    }
+    
+    /**
+     * Implement PIDOutput to set the winch power (with direction inversion).
+     */
+    public void pidWrite(double value) {
+        _winchVictor.set(-value);
     }
     
     /**
@@ -137,6 +145,10 @@ public class Catapult extends Subsystem implements PIDSource {
      */
     public boolean isPositionOnTarget() {
         return (this.isPositionControlled())? _pid.onTarget(): false;
+    }
+    
+    public double getPositionError() {
+        return _pid.getError();
     }
     
     /**

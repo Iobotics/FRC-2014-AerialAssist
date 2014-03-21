@@ -20,7 +20,10 @@ public class RetractCatapult extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        catapult.setPositionSetpoint(RETRACT_POSITION_DEGREES);
+        if(!catapult.isRetracted()) {
+            // enable PID //
+            catapult.setPositionSetpoint(RETRACT_POSITION_DEGREES);
+        }
     }
 
     // Called repeatedly when this Command is scheduled to run
