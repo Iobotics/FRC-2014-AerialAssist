@@ -24,7 +24,7 @@ public class SetIntakeDeployed extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        if(intake.getDeployed() != _position)   {
+        if(intake.isDeployed() != _position)   {
             intake.setDeployed(_position);
         }
     }

@@ -31,15 +31,17 @@ public class Intake extends Subsystem {
      * Set whether the intake is deployed.
      * @param down - true for down, false for up
      */
-    public void setDeployed(boolean down) {
+    public boolean setDeployed(boolean down) {
+        boolean old = this.isDeployed();
         _valve.set(down);
+        return old;
     }
     
     /**
      * Get whether the intake is deployed.
      * @return - the current intake valve position
      */
-    public boolean getDeployed() {
+    public boolean isDeployed() {
         return _valve.get();
     }
     
