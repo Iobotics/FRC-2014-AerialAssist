@@ -13,6 +13,7 @@ import org.iolani.frc.commands.OperateTractionDrive;
 import org.iolani.frc.commands.PassBall;
 import org.iolani.frc.commands.SetBallGrabber;
 import org.iolani.frc.commands.EnableLobShot;
+import org.iolani.frc.commands.RetractCatapult;
 import org.iolani.frc.commands.SetIntakeDeployed;
 import org.iolani.frc.util.PowerScaler;
 
@@ -40,6 +41,7 @@ public class OI {
     private final Button _defenseButton = new JoystickButton(_rStick, 10);
     private final Button _intakeUpButton = new JoystickButton(_rStick, 8);
     private final Button _intakeDownButton = new JoystickButton(_rStick, 9);
+    private final Button _retractButton = new JoystickButton(_rStick, 7);
 
     public Joystick getLeftStick() {
         return _lStick;
@@ -69,6 +71,7 @@ public class OI {
         // ball shooting
         _shootButton.whenPressed(new LaunchBall());
         _lobButton.whileHeld(new EnableLobShot());
+        _retractButton.whenPressed(new RetractCatapult());
         
         // power scalar from 2013 //
         _driveScaler = new PowerScaler(new PowerScaler.PowerPoint[] {

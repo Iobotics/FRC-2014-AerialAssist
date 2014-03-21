@@ -56,9 +56,9 @@ public class Catapult extends Subsystem implements PIDSource, PIDOutput {
         double kD = prefs.getDouble("catapult.kD", kD_DEFAULT);
         
         _pid = new PIDController(kP, kI, kD, this, this);
-        _pid.setInputRange(-5.0, 95.0);
+        _pid.setInputRange(0, 90);
         _pid.setOutputRange(-1.0, 0); // error will be negative //
-        _pid.setPercentTolerance(5.0);
+        _pid.setPercentTolerance(1.0);
         SmartDashboard.putData("catapult-pid", _pid);
         
         _up_volts   = prefs.getDouble("catapult.ma3_up_volts",   UP_VOLTS_DEFAULT);
@@ -209,7 +209,7 @@ public class Catapult extends Subsystem implements PIDSource, PIDOutput {
      */
     public boolean setWinchLatched(boolean latched) {
         boolean old = this.isWinchLatched();
-        _winchValve.set(latched);
+        _winchValve.set(!latched);
         return old;
     }
     
@@ -218,10 +218,10 @@ public class Catapult extends Subsystem implements PIDSource, PIDOutput {
      * @return true if the winch is latched
      */
     public boolean isWinchLatched() {
-        return _winchValve.get();
+        return !_winchValve.get();
     }
     
     public void initDefaultCommand() {
-        setDefaultCommand(new RetractCatapult());
+        //setDefaultCommand(new RetractCatapult());
     }
 }
