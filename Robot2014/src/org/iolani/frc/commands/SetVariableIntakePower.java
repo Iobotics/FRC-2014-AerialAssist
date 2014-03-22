@@ -37,7 +37,7 @@ public class SetVariableIntakePower extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true
@@ -48,5 +48,6 @@ public class SetVariableIntakePower extends CommandBase {
     // subsystems is scheduled to run
     protected void interrupted() {
         intake.setPower(0.0);
+        this.end();
     }
 }

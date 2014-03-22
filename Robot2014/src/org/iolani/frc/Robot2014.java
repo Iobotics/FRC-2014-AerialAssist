@@ -9,6 +9,7 @@ package org.iolani.frc;
 
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -70,6 +71,15 @@ public class Robot2014 extends IterativeRobot {
         SmartDashboard.putNumber("catapult-position", CommandBase.catapult.getPositionDegrees());
         SmartDashboard.putNumber("catapult-winch-power", CommandBase.catapult.getWinchPower());
         SmartDashboard.putNumber("catapult-error", CommandBase.catapult.getPositionError());
+        
+        SmartDashboard.putNumber("drive-left-front", CommandBase.drivetrain.getPower(RobotDrive.MotorType.kFrontLeft));
+        SmartDashboard.putNumber("drive-right-front", CommandBase.drivetrain.getPower(RobotDrive.MotorType.kFrontRight));
+        SmartDashboard.putNumber("drive-left-rear", CommandBase.drivetrain.getPower(RobotDrive.MotorType.kRearLeft));
+        SmartDashboard.putNumber("drive-right-rear", CommandBase.drivetrain.getPower(RobotDrive.MotorType.kRearRight));
+        
+        SmartDashboard.putNumber("left-stick-x", CommandBase.oi.getLeftStick().getX());
+        SmartDashboard.putNumber("right-stick-x", CommandBase.oi.getRightStick().getX());
+        SmartDashboard.putNumber("right-stick-y", CommandBase.oi.getRightStick().getY());
     }
     
     /**

@@ -81,6 +81,14 @@ public class Drivetrain extends Subsystem {
         return !_valve.get();
     }
     
+    public double getPower(RobotDrive.MotorType type) {
+        if(type.value == RobotDrive.MotorType.kFrontLeft.value)  return _lfVictor.get();
+        if(type.value == RobotDrive.MotorType.kFrontRight.value) return _rfVictor.get();
+        if(type.value == RobotDrive.MotorType.kRearLeft.value)   return _lrVictor.get();
+        if(type.value == RobotDrive.MotorType.kRearRight.value)  return _rrVictor.get();
+        throw new IllegalArgumentException("Bad motor type: " + type);
+    }
+    
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         setDefaultCommand(new OperateMecanumDrive());

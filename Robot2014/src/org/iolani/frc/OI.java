@@ -42,6 +42,7 @@ public class OI {
     private final Button _intakeUpButton = new JoystickButton(_rStick, 8);
     private final Button _intakeDownButton = new JoystickButton(_rStick, 9);
     private final Button _retractButton = new JoystickButton(_rStick, 7);
+    private final Button _lobTestButton = new JoystickButton(_rStick, 6);
 
     public Joystick getLeftStick() {
         return _lStick;
@@ -70,11 +71,12 @@ public class OI {
         _intakeDownButton.whenPressed(new SetIntakeDeployed(true, true));
         // ball shooting
         _shootButton.whenPressed(new LaunchBall());
-        _lobButton.whileHeld(new EnableLobShot());
         _retractButton.whenPressed(new RetractCatapult());
+        _lobTestButton.whileHeld(new EnableLobShot());
         
         // power scalar from 2013 //
         _driveScaler = new PowerScaler(new PowerScaler.PowerPoint[] {
+                new PowerScaler.PowerPoint(0.0, 0.0),
                 new PowerScaler.PowerPoint(0.05, 0.0),
                 new PowerScaler.PowerPoint(0.65, 0.5),
                 new PowerScaler.PowerPoint(0.80, 1.0)
@@ -91,6 +93,10 @@ public class OI {
      */
     public double getVariableIntakePower()  {
         return (1 - _lStick.getTwist()) / 2;
+    }
+    
+    public boolean getLobButton() {
+        return _lobButton.get();
     }
 }
 

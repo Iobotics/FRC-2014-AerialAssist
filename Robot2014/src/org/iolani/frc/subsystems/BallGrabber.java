@@ -36,7 +36,7 @@ public class BallGrabber extends Subsystem {
      * @return true if the grabber is grabbed
      */
     public boolean isGrabbed() {
-        return _valve.get();
+        return !_valve.get();
     }
     
     /**
@@ -46,7 +46,7 @@ public class BallGrabber extends Subsystem {
      */
     public boolean setGrabbed(boolean grabbed) {
         boolean old = this.isGrabbed();
-        _valve.set(grabbed);
+        _valve.set(!grabbed);
         return old;
     }
     

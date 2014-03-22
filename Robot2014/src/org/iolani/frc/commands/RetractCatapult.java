@@ -37,7 +37,7 @@ public class RetractCatapult extends CommandBase {
         //       N           -           N           RETRACT       //
         //       N           Y           Y           HOLD          //
         
-        if(!intake.isDeployed()) {
+        if(intake.isDeployed()) {
             // HOLD is we are already retracted and latched //
             _state = (catapult.isRetracted() && catapult.isWinchLatched())? sHOLD: sRETRACT;
         } else {
@@ -63,11 +63,12 @@ public class RetractCatapult extends CommandBase {
                 //if(catapult.isRetracted() || catapult.isPositionOnTarget()) {
                 if(catapult.isRetracted()) {
                     _state = sHOLD;
+                } else if(!intake.isDeployed()) {
+                    _state = sINTAKEWAIT;
                 }
                 break;
             case sHOLD:
-                // FIXME set holding power //
-                catapult.setWinchPower(0.);
+                catapult.setWinchPower(0.0); // cancel PID control, stop winch //
                 break;
         }
         SmartDashboard.putString("catapult-retract-state", this.getStateName());
@@ -80,13 +81,13 @@ public class RetractCatapult extends CommandBase {
 
     // Called once after isFinished returns true
     protected void end() {
-        catapult.setWinchPower(0.0); // cancel PID control, stop winch //
         SmartDashboard.putString("catapult-retract-state", "");
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+        catapult.setWinchPower(0.0); // cancel PID control, stop winch //
         this.end();
     }
     

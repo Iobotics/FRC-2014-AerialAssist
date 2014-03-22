@@ -20,6 +20,7 @@ public class GrabBallWhenSensed extends CommandBase implements BallGrabber.BallS
     private static final int sWAITING = 3;
     private static final int sCLOSE   = 4;
     private static final int sGRABBED = 5;
+    private static final int sABORT   = 6;
     
     private static final double OPEN_DELAY = 0.25;
     
@@ -56,7 +57,7 @@ public class GrabBallWhenSensed extends CommandBase implements BallGrabber.BallS
     
     // Called just before this Command runs the first time
     protected void initialize() {
-        _state = sOPEN;
+        _state = catapult.isRetracted()? sOPEN: sABORT;
         
         // add ourselves as a listener if in async mode //
         if(_async) {
@@ -88,7 +89,6 @@ public class GrabBallWhenSensed extends CommandBase implements BallGrabber.BallS
                     // special handling: get a head start on closing //
                     ballGrabber.setGrabbed(true);
                     _state = sCLOSE;
-                    break;
                 }
                 break;
             case sCLOSE:
@@ -99,13 +99,16 @@ public class GrabBallWhenSensed extends CommandBase implements BallGrabber.BallS
             case sGRABBED:
                 // do nothing, just sit here //
                 break;
+            case sABORT:
+                // do nothing, will quit //
+                break;
         }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         // run continuously until interrupted //
-        return _quitWhenGrabbed && _state == sGRABBED;
+        return (_state == sABORT) || (_quitWhenGrabbed && _state == sGRABBED);
     }
 
     // Called once after isFinished returns true
