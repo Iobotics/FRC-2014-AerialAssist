@@ -13,45 +13,41 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class RetractCatapult extends CommandBase {
     // states //
-    private static final int sINTAKEWAIT = 0;
-    private static final int sRETRACT    = 1;
-    private static final int sRETRACTING = 2;
-    private static final int sHOLD       = 3;
+    private static final int sSTART      = 1;
+    private static final int sINTAKEWAIT = 2;
+    private static final int sRETRACT    = 3;
+    private static final int sRETRACTING = 4;
+    private static final int sHOLD       = 5;
     
     private static final double RETRACT_POSITION_DEGREES = 0.0;
+    private static final double INTAKE_DELAY = 0.25;
     
-    private int     _state;
-    private boolean _intakeState;
+    private int    _state;
+    private double _timer;
     
     public RetractCatapult() {
+        this.setInterruptible(false);
         // Use requires() here to declare subsystem dependencies
         requires(catapult);
+        requires(intake);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        // initial state logic:                                    //
-        //  intake down  retracted  winch latched   initial state  //
-        //       Y           -           -           INTAKEWAIT    //
-        //       N           N           -           RETRACT       //
-        //       N           -           N           RETRACT       //
-        //       N           Y           Y           HOLD          //
-        
-        if(intake.isDeployed()) {
-            // HOLD is we are already retracted and latched //
-            _state = (catapult.isRetracted() && catapult.isWinchLatched())? sHOLD: sRETRACT;
-        } else {
-            _state = sINTAKEWAIT;
-        }
+        _state = !catapult.isRetracted()? sSTART: sHOLD;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         switch(_state) {
+            case sSTART:
+                intake.setDeployed(true);
+                _state = sINTAKEWAIT;
+                _timer = this.timeSinceInitialized();
+                break;
             case sINTAKEWAIT:
-                if(intake.isDeployed()) {
-                    _state = sRETRACT;
-                }
+                if((this.timeSinceInitialized() - _timer) < INTAKE_DELAY) break;
+                _state = sRETRACT;
                 break;
             case sRETRACT:
                 // enable PID //
@@ -62,13 +58,11 @@ public class RetractCatapult extends CommandBase {
             case sRETRACTING:
                 //if(catapult.isRetracted() || catapult.isPositionOnTarget()) {
                 if(catapult.isRetracted()) {
+                    catapult.setWinchPower(0.0); // cancel PID control, stop winch //
                     _state = sHOLD;
-                } else if(!intake.isDeployed()) {
-                    _state = sINTAKEWAIT;
                 }
                 break;
             case sHOLD:
-                catapult.setWinchPower(0.0); // cancel PID control, stop winch //
                 break;
         }
         SmartDashboard.putString("catapult-retract-state", this.getStateName());
@@ -76,7 +70,7 @@ public class RetractCatapult extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return _state == sHOLD;
     }
 
     // Called once after isFinished returns true
@@ -93,6 +87,7 @@ public class RetractCatapult extends CommandBase {
     
     private String getStateName() {
         switch(_state) {
+            case sSTART:      return "START";
             case sINTAKEWAIT: return "INTAKEWAIT";
             case sRETRACT:    return "RETRACT";
             case sRETRACTING: return "RETRACTING";
