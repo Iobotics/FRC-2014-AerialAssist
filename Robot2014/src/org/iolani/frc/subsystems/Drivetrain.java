@@ -74,11 +74,11 @@ public class Drivetrain extends Subsystem {
             _drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, false);
             _drive.setInvertedMotor(RobotDrive.MotorType.kRearRight,  false);
         }
-        _valve.set(mecanum);
+        _valve.set(!mecanum);
     }
     
     public boolean isMecanumMode() {
-        return _valve.get();
+        return !_valve.get();
     }
     
     public void initDefaultCommand() {
