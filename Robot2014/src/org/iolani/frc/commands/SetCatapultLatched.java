@@ -13,7 +13,6 @@ public class SetCatapultLatched extends CommandBase {
     
     private final boolean _latched;
     private final double  _delaySec;
-    private boolean _changed;
     
     /**
      * Constructor. Set the Catapult latched state with a delay.
@@ -38,8 +37,7 @@ public class SetCatapultLatched extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        boolean old = catapult.setWinchLatched(_latched);
-        _changed = (old != _latched);
+        catapult.setWinchLatched(_latched);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -48,7 +46,7 @@ public class SetCatapultLatched extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return !_changed || (this.timeSinceInitialized() >= _delaySec);
+        return (this.timeSinceInitialized() >= _delaySec);
     }
 
     // Called once after isFinished returns true

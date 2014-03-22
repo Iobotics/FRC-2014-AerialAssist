@@ -12,7 +12,6 @@ public class SetBallGrabber extends CommandBase {
     
     private final boolean _value;
     private final double  _delaySec; // negative for sticky mode //
-    private boolean _changed;
     
     /**
      * Constructor. Set the BallGrabber's grabbed state with a delay.
@@ -41,8 +40,7 @@ public class SetBallGrabber extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        boolean old = ballGrabber.setGrabbed(_value);
-        _changed = (old != _value);
+        ballGrabber.setGrabbed(_value);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -52,7 +50,7 @@ public class SetBallGrabber extends CommandBase {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         if(_delaySec < 0) return false;
-        return !_changed || (this.timeSinceInitialized() >= _delaySec);
+        return (this.timeSinceInitialized() >= _delaySec);
     }
 
     // Called once after isFinished returns true
