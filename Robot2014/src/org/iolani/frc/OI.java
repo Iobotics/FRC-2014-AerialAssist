@@ -8,11 +8,11 @@ import org.iolani.frc.commands.AdjustBall;
 import org.iolani.frc.commands.CatchBall;
 import org.iolani.frc.commands.DefendRobot;
 import org.iolani.frc.commands.IntakeAndGrabBall;
-import org.iolani.frc.commands.LaunchBall;
 import org.iolani.frc.commands.OperateTractionDrive;
 import org.iolani.frc.commands.PassBall;
 import org.iolani.frc.commands.SetBallGrabber;
 import org.iolani.frc.commands.EnableLobShot;
+import org.iolani.frc.commands.LaunchBallAndRetract;
 import org.iolani.frc.commands.RetractCatapult;
 import org.iolani.frc.commands.SetIntakeDeployed;
 import org.iolani.frc.util.PowerScaler;
@@ -70,7 +70,7 @@ public class OI {
         _intakeUpButton.whenPressed(new SetIntakeDeployed(false, true));
         _intakeDownButton.whenPressed(new SetIntakeDeployed(true, true));
         // ball shooting
-        _shootButton.whenPressed(new LaunchBall());
+        _shootButton.whenPressed(new LaunchBallAndRetract());
         _retractButton.whenPressed(new RetractCatapult());
         _lobTestButton.whileHeld(new EnableLobShot());
         
