@@ -60,6 +60,7 @@ public class OI {
         _lockTractionButton.whenPressed(new OperateTractionDrive());
         // ball handling
         _intakeButton.whileHeld(new IntakeAndGrabBall());
+        _intakeButton.whenReleased(new SetIntakeDeployed(true, 500));
         _passButton.whileHeld(new PassBall());
         _catchButton.whenPressed(new CatchBall());
         _cancelGrabButton.whileHeld(new SetBallGrabber(false));

@@ -11,22 +11,30 @@ package org.iolani.frc.commands;
 public class SetIntakeDeployed extends CommandBase {
     
     private final boolean _position;
-    private final boolean _sticky;
+    private final double  _delaySec;
     
-    public SetIntakeDeployed(boolean down, boolean sticky) {
-        _position = down;
-        _sticky   = sticky;
+    public SetIntakeDeployed(boolean value, int delayMs) {
+        _position = value;
+        _delaySec = delayMs / 1000.0;
+        // Use requires() here to declare subsystem dependencies
         requires(intake);
     }
-    public SetIntakeDeployed(boolean down) {
-        this(down, false);
+    
+    public SetIntakeDeployed(boolean value, boolean sticky) {
+        this(value, sticky? -1: 0);
+    }
+    
+    /**
+     * Constructor. Set the BallGrabber's grabbed state with no delay.
+     * @param value 
+     */
+    public SetIntakeDeployed(boolean value) {
+        this(value, 0);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        if(intake.isDeployed() != _position)   {
-            intake.setDeployed(_position);
-        }
+        intake.setDeployed(_position);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -35,7 +43,8 @@ public class SetIntakeDeployed extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return !_sticky;
+        if(_delaySec < 0) return false;
+        return (this.timeSinceInitialized() >= _delaySec);
     }
 
     // Called once after isFinished returns true
@@ -49,6 +58,6 @@ public class SetIntakeDeployed extends CommandBase {
     }
     
     public String getName() {
-        return super.getName() + "(" + _position + ", " + _sticky + ")";
+        return super.getName() + "(" + _position + ", " + _delaySec + ")";
     }
 }
