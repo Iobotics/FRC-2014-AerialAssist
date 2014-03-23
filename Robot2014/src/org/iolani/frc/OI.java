@@ -6,14 +6,18 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.iolani.frc.commands.AdjustBall;
 import org.iolani.frc.commands.CatchBall;
+import org.iolani.frc.commands.DefendIntake;
 import org.iolani.frc.commands.DefendRobot;
+import org.iolani.frc.commands.DeployIntakeWhileGrabbed;
 import org.iolani.frc.commands.IntakeAndGrabBall;
 import org.iolani.frc.commands.OperateTractionDrive;
 import org.iolani.frc.commands.PassBall;
 import org.iolani.frc.commands.SetBallGrabber;
 import org.iolani.frc.commands.EnableLobShot;
 import org.iolani.frc.commands.LaunchBallAndRetract;
+import org.iolani.frc.commands.ResetIntakeAfterGrab;
 import org.iolani.frc.commands.RetractCatapult;
+import org.iolani.frc.commands.SetCatapultLatched;
 import org.iolani.frc.commands.SetIntakeDeployed;
 import org.iolani.frc.util.PowerScaler;
 
@@ -26,24 +30,28 @@ public class OI {
     private final Joystick _rStick = new Joystick(2);
   
     // primary user interface buttons //
-    private final Button _tractionButton = new JoystickButton(_lStick, 1);
-    private final Button _catchButton = new JoystickButton(_lStick, 2);
-    private final Button _passButton = new JoystickButton(_lStick, 3);
-    private final Button _cancelGrabButton = new JoystickButton(_lStick, 5);
+    private final Button _tractionButton     = new JoystickButton(_lStick, 1);
+    private final Button _catchButton        = new JoystickButton(_lStick, 2);
+    private final Button _passButton         = new JoystickButton(_lStick, 3);
+    private final Button _cancelGrabButton   = new JoystickButton(_lStick, 4);
+    private final Button _ballAdjustButton   = new JoystickButton(_lStick, 5);
     private final Button _lockTractionButton = new JoystickButton(_lStick, 7);
     private final Button _grabberCloseButton = new JoystickButton(_lStick, 8);
-    private final Button _grabberOpenButton = new JoystickButton(_lStick, 9);
+    private final Button _grabberOpenButton  = new JoystickButton(_lStick, 9);
     
-    private final Button _shootButton = new JoystickButton(_rStick, 1);
-    private final Button _intakeButton = new JoystickButton(_rStick, 3);
-    private final Button _lobButton = new JoystickButton(_rStick, 4);
-    private final Button _ballAdjustButton = new JoystickButton(_rStick, 5);
-    private final Button _defenseButton = new JoystickButton(_rStick, 10);
-    private final Button _intakeUpButton = new JoystickButton(_rStick, 8);
-    private final Button _intakeDownButton = new JoystickButton(_rStick, 9);
-    private final Button _retractButton = new JoystickButton(_rStick, 7);
-    private final Button _lobTestButton = new JoystickButton(_rStick, 6);
+    private final Button _shootButton        = new JoystickButton(_rStick, 1);
+    private final Button _intakeButton       = new JoystickButton(_rStick, 3);
+    private final Button _lobButton          = new JoystickButton(_rStick, 4);
+    private final Button _defendIntakeButton = new JoystickButton(_rStick, 5);
+    private final Button _defenseButton      = new JoystickButton(_rStick, 10);
+    private final Button _intakeUpButton     = new JoystickButton(_rStick, 8);
+    private final Button _intakeDownButton   = new JoystickButton(_rStick, 9);
+    private final Button _retractButton      = new JoystickButton(_rStick, 7);
+    private final Button _lobTestButton      = new JoystickButton(_rStick, 6);
+    private final Button _releaseWinchButton = new JoystickButton(_rStick, 11);
 
+    private final PowerScaler _driveScaler;
+    
     public Joystick getLeftStick() {
         return _lStick;
     }
@@ -51,8 +59,6 @@ public class OI {
     public Joystick getRightStick() {
         return _rStick;
     }
-    
-    private PowerScaler _driveScaler;
         
     public OI() {
         // traction mode
@@ -60,11 +66,13 @@ public class OI {
         _lockTractionButton.whenPressed(new OperateTractionDrive());
         // ball handling
         _intakeButton.whileHeld(new IntakeAndGrabBall());
-        _intakeButton.whenReleased(new SetIntakeDeployed(true, 500));
+        _intakeButton.whenReleased(new ResetIntakeAfterGrab());
         _passButton.whileHeld(new PassBall());
         _catchButton.whenPressed(new CatchBall());
         _cancelGrabButton.whileHeld(new SetBallGrabber(false));
         _ballAdjustButton.whenPressed(new AdjustBall());
+        _defendIntakeButton.whileHeld(new DefendIntake());
+        _defendIntakeButton.whenReleased(new DeployIntakeWhileGrabbed());
         _defenseButton.whenPressed(new DefendRobot());
         _grabberOpenButton.whenPressed(new SetBallGrabber(false, true));
         _grabberCloseButton.whenPressed(new SetBallGrabber(true, true));
@@ -74,6 +82,8 @@ public class OI {
         _shootButton.whenPressed(new LaunchBallAndRetract());
         _retractButton.whenPressed(new RetractCatapult());
         _lobTestButton.whileHeld(new EnableLobShot());
+        _releaseWinchButton.whileHeld(new SetCatapultLatched(false));
+        _releaseWinchButton.whenReleased(new SetCatapultLatched(true));
         
         // power scalar from 2013 //
         _driveScaler = new PowerScaler(new PowerScaler.PowerPoint[] {

@@ -10,16 +10,12 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 
 /**
  *
- * @author koluke
+ * @author jmalins
  */
-public class AdjustBall extends CommandGroup {
+public class ResetIntakeAfterGrab extends CommandGroup {
     
-    public AdjustBall() {
-        this.addSequential(new SetBallGrabber(false));
-        this.addSequential(new SetIntakeDeployed(true));
-        this.addSequential(new WaitCommand(0.25));
-        this.addSequential(new SetBallGrabber(true));
-        this.addSequential(new WaitCommand(0.25));
+    public ResetIntakeAfterGrab() {
+        this.addSequential(new WaitCommand(0.5));
         this.addSequential(new DeployIntakeWhileGrabbed());
     }
 }

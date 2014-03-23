@@ -6,7 +6,6 @@
 package org.iolani.frc.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.WaitCommand;
 
 /**
  *
@@ -17,7 +16,6 @@ public class CatchBall extends CommandGroup {
     public CatchBall() {
         this.addParallel(new SetIntakeDeployed(true));
         this.addSequential(new GrabBallWhenSensed());
-        this.addSequential(new WaitCommand(0.5));
-        this.addSequential(new SetIntakeDeployed(false));
+        this.addSequential(new ResetIntakeAfterGrab());
     }
 }
