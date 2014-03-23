@@ -41,4 +41,8 @@ public class SetIntakePower extends CommandBase {
     protected void interrupted() {
         intake.setPower(0.0);
     }
+    
+    public String getName() {
+        return super.getName() + "(" + _power + ")";
+    }
 }

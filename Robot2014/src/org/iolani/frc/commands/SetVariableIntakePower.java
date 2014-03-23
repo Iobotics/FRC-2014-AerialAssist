@@ -50,4 +50,8 @@ public class SetVariableIntakePower extends CommandBase {
         intake.setPower(0.0);
         this.end();
     }
+    
+    public String getName() {
+        return super.getName() + "(" + intake.getPower() + ")";
+    }
 }

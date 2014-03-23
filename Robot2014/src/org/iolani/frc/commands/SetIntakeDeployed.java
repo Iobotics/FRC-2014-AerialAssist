@@ -58,6 +58,6 @@ public class SetIntakeDeployed extends CommandBase {
     }
     
     public String getName() {
-        return super.getName() + "(" + _position + ", " + _delaySec + ")";
+        return super.getName() + "(" + _position + ", " + ((_delaySec < 0)? "sticky": Double.toString(_delaySec)) + ")";
     }
 }
