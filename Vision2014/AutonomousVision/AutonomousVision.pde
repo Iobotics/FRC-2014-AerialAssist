@@ -1,4 +1,5 @@
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import blobDetection.*;
 
 private static final int _color_threshold = 170; //How far the color can be from green to be registered as a point
@@ -14,6 +15,8 @@ PImage greenFiltered; //New black and white image based on the green pixels
 IPCapture cam; //Frame from the camera
 
 BlobDetection blobDetector = new BlobDetection(camWidth, camHeight);
+
+NetworkTable table = NetworkTable.getTable("vision");
 
 void setup(){
   println("Initializing...");
@@ -58,6 +61,7 @@ void draw(){
 
 double computeRectangularity(Blob blob){ //Returns proportional rectangularity; i.e. blob area / bounding box area
   //return blobArea(blob) / 
+  return 0.0;
 }
 
 double blobArea(Blob blob){ //Returns the combined area of all triangles in a blob
