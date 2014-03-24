@@ -30,7 +30,7 @@ public class OperateMecanumDrive extends CommandBase {
         double rot = oi.getLeftStick().getX();
         
         // signal conditioning //
-        PowerScaler scale = oi.getDriveScaler();
+        PowerScaler scale = oi.getMecanumDriveScaler();
         if(scale != null) {
             mag = scale.get(mag);
             rot = scale.get(rot);

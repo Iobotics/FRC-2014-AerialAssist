@@ -50,7 +50,8 @@ public class OI {
     private final Button _lobTestButton      = new JoystickButton(_rStick, 6);
     private final Button _releaseWinchButton = new JoystickButton(_rStick, 11);
 
-    private final PowerScaler _driveScaler;
+    private final PowerScaler _mecanumDriveScaler;
+    private final PowerScaler _tractionDriveScaler;
     
     public Joystick getLeftStick() {
         return _lStick;
@@ -85,17 +86,27 @@ public class OI {
         _releaseWinchButton.whileHeld(new SetCatapultLatched(false));
         _releaseWinchButton.whenReleased(new SetCatapultLatched(true));
         
-        // power scalar from 2013 //
-        _driveScaler = new PowerScaler(new PowerScaler.PowerPoint[] {
+        // power scalar from 2013 (mecanum mode) //
+        _mecanumDriveScaler = new PowerScaler(new PowerScaler.PowerPoint[] {
                 new PowerScaler.PowerPoint(0.0, 0.0),
                 new PowerScaler.PowerPoint(0.05, 0.0),
                 new PowerScaler.PowerPoint(0.65, 0.5),
                 new PowerScaler.PowerPoint(0.80, 1.0)
             });
+        // different scaling for traction //
+        _tractionDriveScaler = new PowerScaler(new PowerScaler.PowerPoint[] {
+                new PowerScaler.PowerPoint(0.0, 0.0),
+                new PowerScaler.PowerPoint(0.05, 0.0),
+                new PowerScaler.PowerPoint(0.80, 1.0)
+            });
     }
     
-    public PowerScaler getDriveScaler() {
-        return _driveScaler;
+    public PowerScaler getMecanumDriveScaler() {
+        return _mecanumDriveScaler;
+    }
+    
+    public PowerScaler getTractionDriveScaler() {
+        return _tractionDriveScaler;
     }
     
     /**
