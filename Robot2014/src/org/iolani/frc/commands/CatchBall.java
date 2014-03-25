@@ -13,9 +13,12 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class CatchBall extends CommandGroup {
     
-    public CatchBall() {
-        this.addParallel(new SetIntakeDeployed(true));
+    public CatchBall(boolean intakeDeployed) {
+        this.addParallel(new SetIntakeDeployed(intakeDeployed));
         this.addSequential(new GrabBallWhenSensed());
-        this.addSequential(new ResetIntakeAfterGrab());
+        if(intakeDeployed) {
+            this.addSequential(new ResetIntakeAfterGrab());
+        }
     }
+     
 }

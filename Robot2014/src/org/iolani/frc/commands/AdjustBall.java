@@ -6,8 +6,6 @@
 package org.iolani.frc.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.StartCommand;
-import edu.wpi.first.wpilibj.command.WaitCommand;
 
 /**
  *
@@ -18,9 +16,5 @@ public class AdjustBall extends CommandGroup {
     public AdjustBall() {
         this.addSequential(new SetBallGrabber(false));
         this.addSequential(new SetIntakeDeployed(true));
-        this.addSequential(new WaitCommand(0.25));
-        this.addSequential(new SetBallGrabber(true));
-        this.addSequential(new WaitCommand(0.25));
-        this.addSequential(new StartCommand(new DeployIntakeWhileGrabbed())); // allow us to press again
     }
 }

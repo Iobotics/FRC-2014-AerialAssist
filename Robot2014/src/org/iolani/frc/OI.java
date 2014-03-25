@@ -30,14 +30,14 @@ public class OI {
     private final Joystick _rStick = new Joystick(2);
   
     // primary user interface buttons //
-    private final Button _tractionButton     = new JoystickButton(_lStick, 1);
-    private final Button _catchButton        = new JoystickButton(_lStick, 2);
-    private final Button _passButton         = new JoystickButton(_lStick, 3);
-    private final Button _cancelGrabButton   = new JoystickButton(_lStick, 4);
-    private final Button _ballAdjustButton   = new JoystickButton(_lStick, 5);
-    private final Button _lockTractionButton = new JoystickButton(_lStick, 7);
-    private final Button _grabberCloseButton = new JoystickButton(_lStick, 8);
-    private final Button _grabberOpenButton  = new JoystickButton(_lStick, 9);
+    private final Button _tractionButton       = new JoystickButton(_lStick, 1);
+    private final Button _catchButton          = new JoystickButton(_lStick, 2);
+    private final Button _passButton           = new JoystickButton(_lStick, 3);
+    private final Button _backboardCatchButton = new JoystickButton(_lStick, 4);
+    private final Button _ballAdjustButton     = new JoystickButton(_lStick, 5);
+    private final Button _lockTractionButton   = new JoystickButton(_lStick, 7);
+    private final Button _grabberCloseButton   = new JoystickButton(_lStick, 8);
+    private final Button _grabberOpenButton    = new JoystickButton(_lStick, 9);
     
     private final Button _shootButton        = new JoystickButton(_rStick, 1);
     private final Button _intakeButton       = new JoystickButton(_rStick, 3);
@@ -69,9 +69,11 @@ public class OI {
         _intakeButton.whileHeld(new IntakeAndGrabBall());
         _intakeButton.whenReleased(new ResetIntakeAfterGrab());
         _passButton.whileHeld(new PassBall());
-        _catchButton.whenPressed(new CatchBall());
-        _cancelGrabButton.whileHeld(new SetBallGrabber(false));
-        _ballAdjustButton.whenPressed(new AdjustBall());
+        
+        _catchButton.whenPressed(new CatchBall(true));
+        _backboardCatchButton.whenPressed(new CatchBall(false));
+        _ballAdjustButton.whileHeld(new AdjustBall());
+        _ballAdjustButton.whenReleased(new ResetIntakeAfterGrab());
         _defendIntakeButton.whileHeld(new DefendIntake());
         _defendIntakeButton.whenReleased(new DeployIntakeWhileGrabbed());
         _defenseButton.whenPressed(new DefendRobot());
