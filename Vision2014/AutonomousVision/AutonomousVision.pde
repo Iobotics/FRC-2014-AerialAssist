@@ -18,7 +18,7 @@ IPCapture cam; //Frame from the camera
 
 BlobDetection blobDetector = new BlobDetection(camWidth, camHeight);
 
-NetworkTable table = NetworkTable.getTable("vision");
+NetworkTable table;
 
 void setup() {
   println("Initializing...");
