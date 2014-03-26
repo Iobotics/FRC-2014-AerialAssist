@@ -2,8 +2,8 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import blobDetection.*;
 
-private static final int _color_threshold = 170; //How far the color can be from green to be registered as a point
-private static final int _noncolor_threshold = 150; //blue and red values need to be LESS than this in order to qualify a pixel as truly red
+private static final int _color_threshold = 110; //How far the color can be from green to be registered as a point
+private static final int _noncolor_threshold = 120; //blue and red values need to be LESS than this in order to qualify a pixel as truly red
 
 // Using AXIS 206 camera's lowest quality size to speed up image processing
 private static final int camWidth = 320;
@@ -14,16 +14,19 @@ int greenPixelCount; //The number of pixels that are registered as green
 PImage greenFiltered; //New black and white image based on the green pixels
 IPCapture cam; //Frame from the camera
 
+//PImage testImage = loadImage("image.cgi-4.jpeg");
+
 BlobDetection blobDetector = new BlobDetection(camWidth, camHeight);
 
 NetworkTable table = NetworkTable.getTable("vision");
 
-void setup(){
+void setup() {
   println("Initializing...");
   greenFiltered = cam = new IPCapture(this, "http://10.24.38.11/mjpg/video.mjpg", "", "");
   cam.start();  
   size(camWidth, camHeight);
 }
+
 
 void draw(){  
   if(cam.isAvailable()) {
@@ -33,9 +36,9 @@ void draw(){
   cam.loadPixels();
   greenFiltered.loadPixels();
   
-  if(cam.pixels.length > 0){
+  if(cam.pixels.length > 0) {
     for(int x = 0; x < camWidth; x++) { //Iterate through each column
-      for(int y = 0; y < camHeight; y++){ //Iterate through each row
+      for(int y = 0; y < camHeight; y++) { //Iterate through each row
         currentPixel = x + (y * cam.width);
         if((green(cam.pixels[currentPixel]) > _color_threshold) 
              && (blue(cam.pixels[currentPixel]) < _noncolor_threshold) 
@@ -53,18 +56,27 @@ void draw(){
     Blob[] blobArray = new Blob[blobDetector.getBlobNb()];
     Scores[] scoresArray = new Scores[blobArray.length]; //Holds info about each blob
     for(int i = 0; i < blobArray.length; i++){
-      
+      //iterate through blobArray
     }
   }
   greenFiltered.updatePixels();
 }
 
-double computeRectangularity(Blob blob){ //Returns proportional rectangularity; i.e. blob area / bounding box area
-  //return blobArea(blob) / 
-  return 0.0;
+double computeAspectRatio(Blob blob) { 
+  return denormalize(blob.w, camWidth) / denormalize(blob.h, camHeight);
 }
 
-double blobArea(Blob blob){ //Returns the combined area of all triangles in a blob
+double denormalize(double normalized, int scale) {
+  return normalized * scale;
+}
+
+double computeRectangularity(Blob blob) { //Returns proportional rectangularity; i.e. blob area / bounding box area
+  float boundingBoxArea = blob.w * camWidth * blob.h * camHeight; // change to denormalize later
+  return blobArea(blob) / boundingBoxArea;
+}
+  
+
+double blobArea(Blob blob) { //Returns the combined area of all triangles in a blob
   EdgeVertex point1; //Points that make up each triangle
   EdgeVertex point2;
   EdgeVertex point3;
@@ -73,7 +85,7 @@ double blobArea(Blob blob){ //Returns the combined area of all triangles in a bl
   float length3;
   float semiperimiter;
   double totalArea = 0;
-  for(int i = 0; i < blob.getTriangleNb(); i++){ //Uses Hero's Formula to get the area of each triangle
+  for(int i = 0; i < blob.getTriangleNb(); i++) { //Uses Hero's Formula to get the area of each triangle
     point1 = blob.getTriangleVertexA(blob.getTriangle(0));
     point2 = blob.getTriangleVertexB(blob.getTriangle(0));
     point3 = blob.getTriangleVertexA(blob.getTriangle(0));
