@@ -22,6 +22,14 @@ NetworkTable table = NetworkTable.getTable("vision");
 
 void setup() {
   println("Initializing...");
+  //NetworkTable.setClientMode(); // not sure if necessary yet
+  NetworkTable.setIPAddress("10.24.38.2");
+  println("successfully set NetworkTable IP Address");
+  table = NetworkTable.getTable("vision");
+  println("got Vision table");
+  table.putBoolean("connected", true);
+  println("put boolean in");
+  if(table.getBoolean("connected")) println("got back the boolean");
   greenFiltered = cam = new IPCapture(this, "http://10.24.38.11/mjpg/video.mjpg", "", "");
   cam.start();  
   size(camWidth, camHeight);
@@ -89,9 +97,9 @@ double blobArea(Blob blob) { //Returns the combined area of all triangles in a b
     point1 = blob.getTriangleVertexA(blob.getTriangle(0));
     point2 = blob.getTriangleVertexB(blob.getTriangle(0));
     point3 = blob.getTriangleVertexA(blob.getTriangle(0));
-    length1 = dist(point1.x, point1.y, point2.x, point2.y);
-    length2 = dist(point1.x, point1.y, point3.x, point3.y);
-    length3 = dist(point2.x, point2.y, point3.x, point3.y);
+    length1 = dist(denormalize(point1.x, camWidth), denormalize(point1.y, camHeight), denormalize(point2.x, camWidth), denormalize(point2.y, camHeight));
+    length2 = dist(denormalize(point1.x, camWidth), denormalize(point1.y, camHeight), denormalize(point3.x, camWidth), denormalize(point3.y, camHeight));
+    length3 = dist(denormalize(point2.x, camWidth), denormalize(point2.y, camHeight), denormalize(point3.x, camWidth), denormalize(point3.y, camHeight));
     semiperimiter = (length1 + length2 + length3) / 2;
     totalArea += sqrt(semiperimiter * (semiperimiter - length1) * (semiperimiter - length2) * (semiperimiter - length3));
   }
