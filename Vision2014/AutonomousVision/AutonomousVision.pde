@@ -2,19 +2,18 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import blobDetection.*;
 
-private static final int _color_threshold = 110; //How far the color can be from green to be registered as a point
-private static final int _noncolor_threshold = 120; //blue and red values need to be LESS than this in order to qualify a pixel as truly red
+private static final int _green_color_threshold = 110; //How far the color can be from green to be registered as a point
+private static final int _blue_color_threshold = 120; //blue values need to be LESS than this in order to qualify a pixel as truly red
+private static final int _red_color_threshold = 30; //red values need to be LESS than this
 
 // Using AXIS 206 camera's lowest quality size to speed up image processing
+private static int greenPixels;
 private static final int camWidth = 320;
 private static final int camHeight = 240;
 
 int currentPixel; //The array index of the pixel we're looking at
-int greenPixelCount; //The number of pixels that are registered as green
 PImage greenFiltered; //New black and white image based on the green pixels
 IPCapture cam; //Frame from the camera
-
-//PImage testImage = loadImage("image.cgi-4.jpeg");
 
 BlobDetection blobDetector = new BlobDetection(camWidth, camHeight);
 
@@ -22,25 +21,23 @@ NetworkTable table;
 
 void setup() {
   println("Initializing...");
-  //NetworkTable.setClientMode(); // not sure if necessary yet
+  NetworkTable.setClientMode();
   NetworkTable.setIPAddress("10.24.38.2");
-  println("successfully set NetworkTable IP Address");
   table = NetworkTable.getTable("vision");
-  println("got Vision table");
-  table.putBoolean("connected", true);
-  println("put boolean in");
-  if(table.getBoolean("connected")) println("got back the boolean");
   greenFiltered = cam = new IPCapture(this, "http://10.24.38.11/mjpg/video.mjpg", "", "");
   cam.start();  
   size(camWidth, camHeight);
 }
 
+boolean set = false;
+boolean blobSet = false;
 
 void draw(){  
   if(cam.isAvailable()) {
     cam.read();   
     image(cam,0,0);
   }
+  greenPixels = 0;
   cam.loadPixels();
   greenFiltered.loadPixels();
   
@@ -48,11 +45,11 @@ void draw(){
     for(int x = 0; x < camWidth; x++) { //Iterate through each column
       for(int y = 0; y < camHeight; y++) { //Iterate through each row
         currentPixel = x + (y * cam.width);
-        if((green(cam.pixels[currentPixel]) > _color_threshold) 
-             && (blue(cam.pixels[currentPixel]) < _noncolor_threshold) 
-             && (red(cam.pixels[currentPixel]) < _noncolor_threshold)) { //Makes sure each pixel has a sufficient amount of green, and not too much red / blue
-          greenPixelCount++;
+        if((green(cam.pixels[currentPixel]) > _green_color_threshold) 
+             && (blue(cam.pixels[currentPixel]) < _blue_color_threshold) 
+             && (red(cam.pixels[currentPixel]) < _red_color_threshold)) { //Makes sure each pixel has a sufficient amount of green, and not too much red / blue
           stroke(255, 0, 0);
+          greenPixels++;
           greenFiltered.pixels[currentPixel] = color(0, 0, 0); //Map all green points to black on the new image
           point(x,y); //===FOR DEBUGGING: Puts a point at every point detected as green
         } else {
@@ -63,19 +60,37 @@ void draw(){
     blobDetector.computeBlobs(greenFiltered.pixels); //Compute blobs on the new image
     Blob[] blobArray = new Blob[blobDetector.getBlobNb()];
     Scores[] scoresArray = new Scores[blobArray.length]; //Holds info about each blob
+    if(greenPixels > 0)  {
+      if(!blobSet && table.isConnected()) {
+        table.putBoolean("blobDetected", true);
+        blobSet = true;
+        println("set 'blobDetected' to true; greenPixels == " + greenPixels);
+      }
+      else  {
+        table.putBoolean("blobDetected", false);
+        blobSet = false;
+        println("reset blobDetected");
+      }
+    }
     for(int i = 0; i < blobArray.length; i++){
       //iterate through blobArray
     }
   }
+  if(!set && table.isConnected()) {
+    table.putBoolean("connected", true);
+    set = true;
+    println("set 'connected' to true");
+  }
   greenFiltered.updatePixels();
 }
+
 
 double computeAspectRatio(Blob blob) { 
   return denormalize(blob.w, camWidth) / denormalize(blob.h, camHeight);
 }
 
-double denormalize(double normalized, int scale) {
-  return normalized * scale;
+float denormalize(double normalized, int scale) {
+  return (float) normalized * scale;
 }
 
 double computeRectangularity(Blob blob) { //Returns proportional rectangularity; i.e. blob area / bounding box area
