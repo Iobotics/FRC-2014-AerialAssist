@@ -46,6 +46,14 @@ public abstract class CommandBase extends Command {
         SmartDashboard.putData(pneumatics);
     }
 
+    public CommandBase(String name, double timeoutSec) {
+        super(name, timeoutSec);
+    }
+    
+    public CommandBase(double timeoutSec) {
+        super(timeoutSec);
+    }
+    
     public CommandBase(String name) {
         super(name);
     }
