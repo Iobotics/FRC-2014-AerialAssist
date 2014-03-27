@@ -61,6 +61,9 @@ void draw(){
     blobDetector.computeBlobs(greenFiltered.pixels); //Compute blobs on the new image
     Blob[] blobArray = new Blob[blobDetector.getBlobNb()];
     Scores[] scoresArray = new Scores[blobArray.length]; //Holds info about each blob
+    for(int i = 0; i < blobArray.length; i++){
+      blobArray[i] = blobDetector.getBlob(i);
+    }
     if(greenPixels > 0)  {
       if(!blobSet && table.isConnected()) {
         table.putBoolean("blobDetected", true);
@@ -72,9 +75,6 @@ void draw(){
         blobSet = false;
         println("reset blobDetected");
       }
-    }
-    for(int i = 0; i < blobArray.length; i++){
-      //iterate through blobArray
     }
   }
   if(!set && table.isConnected()) {
