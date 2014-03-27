@@ -28,6 +28,8 @@ void setup() {
   greenFiltered = cam = new IPCapture(this, "http://10.24.38.11/mjpg/video.mjpg", "", "");
   cam.start();  
   size(camWidth, camHeight);
+  blobDetector.setPosDiscrimination(false);
+  blobDetector.setThreshold(0.5);
 }
 
 boolean set = false;
@@ -36,7 +38,7 @@ boolean blobSet = false;
 void draw(){  
   if(cam.isAvailable()) {
     cam.read();   
-    image(cam,0,0);
+    //image(greenFiltered,0,0);
   }
   greenPixels = 0;
   cam.loadPixels();
@@ -49,26 +51,32 @@ void draw(){
         if((green(cam.pixels[currentPixel]) > _green_color_threshold) 
              && (blue(cam.pixels[currentPixel]) < _blue_color_threshold) 
              && (red(cam.pixels[currentPixel]) < _red_color_threshold)) { //Makes sure each pixel has a sufficient amount of green, and not too much red / blue
-          stroke(255, 0, 0);
+          stroke(0, 0, 0);
           greenPixels++;
           greenFiltered.pixels[currentPixel] = color(0, 0, 0); //Map all green points to black on the new image
           point(x,y); //===FOR DEBUGGING: Puts a point at every point detected as green
         } else {
           greenFiltered.pixels[currentPixel] = color(255, 255, 255); //Map all nongreen points to white on the new image
+          stroke(255, 255, 255);
+          point(x,y);
         }
       }
     }
+    //greenFiltered.
     blobDetector.computeBlobs(greenFiltered.pixels); //Compute blobs on the new image
-    Blob[] blobArray = new Blob[blobDetector.getBlobNb()];
-    Scores[] scoresArray = new Scores[blobArray.length]; //Holds info about each blob
-    for(int i = 0; i < blobArray.length; i++){
-      blobArray[i] = blobDetector.getBlob(i);
+    int validBlobCount = 0;
+    //Checks based on rectangularity and aspect ratio, each with 25% tolerance
+    for(int i = 0; i < blobDetector.getBlobNb(); i++){
+      if(computeRectangularity(blobDetector.getBlob(i)) > 0.75 && ((computeAspectRatio(blobDetector.getBlob(i)) > .09375 && computeAspectRatio(blobDetector.getBlob(i)) < .15625) || (computeAspectRatio(blobDetector.getBlob(i)) > 4.5 && computeAspectRatio(blobDetector.getBlob(i)) < 7.5))){
+        validBlobCount++;
+      }
     }
-    if(greenPixels > 0)  {
+    System.out.println("There are " + blobDetector.getBlobNb() + " blobs.");
+    if(validBlobCount > 0)  {
       if(!blobSet && table.isConnected()) {
         table.putBoolean("blobDetected", true);
         blobSet = true;
-        println("set 'blobDetected' to true; greenPixels == " + greenPixels);
+        println("set 'blobDetected' to true; Valid blob cound == " + validBlobCount);
       }
       else  {
         table.putBoolean("blobDetected", false);
@@ -83,6 +91,7 @@ void draw(){
     println("set 'connected' to true");
   }
   greenFiltered.updatePixels();
+  image(greenFiltered,0,0);
 }
 
 
@@ -123,3 +132,5 @@ double blobArea(Blob blob) { //Returns the combined area of all triangles in a b
   }
   return totalArea;
 }
+
+
