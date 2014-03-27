@@ -1,6 +1,7 @@
 package org.iolani.frc.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.iolani.frc.OI;
 import org.iolani.frc.subsystems.*;
@@ -20,6 +21,7 @@ public abstract class CommandBase extends Command {
     public final static BallGrabber ballGrabber = new BallGrabber();
     public final static Catapult    catapult    = new Catapult();
     public final static Pneumatics  pneumatics  = new Pneumatics();
+    public static NetworkTable table = NetworkTable.getTable("vision");
 
     public static void init() {
         // This MUST be here. If the OI creates Commands (which it very likely

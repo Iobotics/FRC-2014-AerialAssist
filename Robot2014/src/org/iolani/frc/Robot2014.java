@@ -80,7 +80,15 @@ public class Robot2014 extends IterativeRobot {
         SmartDashboard.putNumber("left-stick-x", CommandBase.oi.getLeftStick().getX());
         SmartDashboard.putNumber("right-stick-x", CommandBase.oi.getRightStick().getX());
         SmartDashboard.putNumber("right-stick-y", CommandBase.oi.getRightStick().getY());
+        
+        boolean current = CommandBase.table.getBoolean("connected",false);
+        if(current != _last) {
+            System.out.println("vision 'connected' changed: " + current);
+            _last = current;
+        }
     }
+    
+    private boolean _last = true;
     
     /**
      * Called when disabled most begins.
