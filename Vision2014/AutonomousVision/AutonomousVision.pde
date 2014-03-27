@@ -10,6 +10,7 @@ private static final int _red_color_threshold = 30; //red values need to be LESS
 private static int greenPixels;
 private static final int camWidth = 320;
 private static final int camHeight = 240;
+private static final double rectangularityThreshold = 0.75;
 
 int currentPixel; //The array index of the pixel we're looking at
 PImage greenFiltered; //New black and white image based on the green pixels
@@ -85,7 +86,8 @@ void draw(){
 }
 
 
-double computeAspectRatio(Blob blob) { 
+double computeAspectRatio(Blob blob) {
+  if(blob == null)  return 0.0;
   return denormalize(blob.w, camWidth) / denormalize(blob.h, camHeight);
 }
 
@@ -94,7 +96,8 @@ float denormalize(double normalized, int scale) {
 }
 
 double computeRectangularity(Blob blob) { //Returns proportional rectangularity; i.e. blob area / bounding box area
-  float boundingBoxArea = blob.w * camWidth * blob.h * camHeight; // change to denormalize later
+  if(blob == null)  return 0.0;
+  float boundingBoxArea = denormalize(blob.w, camWidth) * denormalize(blob.h, camHeight);
   return blobArea(blob) / boundingBoxArea;
 }
   
