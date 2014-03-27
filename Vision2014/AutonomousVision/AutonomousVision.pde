@@ -67,8 +67,18 @@ void draw(){
     int validBlobCount = 0;
     //Checks based on rectangularity and aspect ratio, each with 25% tolerance
     for(int i = 0; i < blobDetector.getBlobNb(); i++){
-      if(computeRectangularity(blobDetector.getBlob(i)) > 0.75 && ((computeAspectRatio(blobDetector.getBlob(i)) > .09375 && computeAspectRatio(blobDetector.getBlob(i)) < .15625) || (computeAspectRatio(blobDetector.getBlob(i)) > 4.5 && computeAspectRatio(blobDetector.getBlob(i)) < 7.5))){
+      if(computeRectangularity(blobDetector.getBlob(i)) > 0.75 && ((computeAspectRatio(blobDetector.getBlob(i)) > 0.09375 && computeAspectRatio(blobDetector.getBlob(i)) < 0.15625) || (computeAspectRatio(blobDetector.getBlob(i)) > 4.5 && computeAspectRatio(blobDetector.getBlob(i)) < 7.5))){
         validBlobCount++;
+      }
+      if(computeRectangularity(blobDetector.getBlob(i)) > 0.75) && computeAspectRatio(blobDetector.getBlob(i)) > 0.09375 && computeAspectRatio(blobDetector.getBlob(i)) < 0.15625)  {
+          if(blobDetector.getBlob(i).x > 0.5) {
+            // blob is on right side of camera frame
+            table.putBoolean("rightHot", true);
+          }
+          else  {
+            // blob is on left side of camera frame
+            table.putBoolean("rightHot", false);
+          }
       }
     }
     System.out.println("There are " + blobDetector.getBlobNb() + " blobs.");
