@@ -22,6 +22,7 @@ import org.iolani.frc.commands.ResetIntakeAfterGrab;
 import org.iolani.frc.commands.RetractCatapult;
 import org.iolani.frc.commands.SetCatapultLatched;
 import org.iolani.frc.commands.SetIntakeDeployed;
+import org.iolani.frc.commands.auto.AutoDriveForwardAndShoot;
 import org.iolani.frc.util.PowerScaler;
 
 /**
@@ -41,6 +42,7 @@ public class OI {
     private final Button _lockTractionButton   = new JoystickButton(_lStick, 7);
     private final Button _grabberCloseButton   = new JoystickButton(_lStick, 8);
     private final Button _grabberOpenButton    = new JoystickButton(_lStick, 9);
+    private final Button _autoTestButton       = new JoystickButton(_lStick, 11);
     
     private final Button _shootButton        = new JoystickButton(_rStick, 1);
     private final Button _intakeButton       = new JoystickButton(_rStick, 3);
@@ -107,6 +109,9 @@ public class OI {
                 new PowerScaler.PowerPoint(0.05, 0.0),
                 new PowerScaler.PowerPoint(0.80, 1.0)
             });
+        
+        // autonomous testing //
+        _autoTestButton.whenPressed(new AutoDriveForwardAndShoot());
         
         // testing code for vision
         _visionButton  = new NetworkButton(CommandBase.table, "connected");

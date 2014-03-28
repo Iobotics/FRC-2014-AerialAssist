@@ -10,10 +10,12 @@ package org.iolani.frc;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.iolani.frc.commands.CommandBase;
+import org.iolani.frc.commands.auto.AutoDriveForwardAndShoot;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,6 +26,8 @@ import org.iolani.frc.commands.CommandBase;
  */
 public class Robot2014 extends IterativeRobot {
 
+    private Command _autoCommand;
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -36,12 +40,16 @@ public class Robot2014 extends IterativeRobot {
         // Initialize all subsystems
         CommandBase.init();
         SmartDashboard.putData(Scheduler.getInstance());
+        
+        _autoCommand = new AutoDriveForwardAndShoot();
     }
 
     public void autonomousInit() {
         System.out.println("Autonomous mode active");
         // schedule the autonomous command (example)
-        //autonomousCommand.start();
+        if(_autoCommand != null) {
+            _autoCommand.start();
+        }
     }
 
     /**
@@ -57,7 +65,9 @@ public class Robot2014 extends IterativeRobot {
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
         // this line or comment it out.
-        //autonomousCommand.cancel();
+        if(_autoCommand != null && _autoCommand.isRunning()) {
+            _autoCommand.cancel();
+        }
     }
 
     /**
