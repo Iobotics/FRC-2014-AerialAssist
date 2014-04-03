@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.iolani.frc.commands.CommandBase;
-import org.iolani.frc.commands.auto.AutoDriveForwardAndShoot;
+import org.iolani.frc.commands.auto.AutoDropBallDriveAndShoot;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -41,7 +41,10 @@ public class Robot2014 extends IterativeRobot {
         CommandBase.init();
         SmartDashboard.putData(Scheduler.getInstance());
         
-        _autoCommand = new AutoDriveForwardAndShoot();
+        /*_autoCommand = CommandBase.ballGrabber.isBallSensed()?
+                (Command) new AutoDriveBackwardsAndShoot():
+                (Command) new AutoDriveBackwards();*/
+        _autoCommand = new AutoDropBallDriveAndShoot();
     }
 
     public void autonomousInit() {

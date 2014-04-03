@@ -22,7 +22,7 @@ import org.iolani.frc.commands.ResetIntakeAfterGrab;
 import org.iolani.frc.commands.RetractCatapult;
 import org.iolani.frc.commands.SetCatapultLatched;
 import org.iolani.frc.commands.SetIntakeDeployed;
-import org.iolani.frc.commands.auto.AutoDriveForwardAndShoot;
+import org.iolani.frc.commands.auto.AutoDriveBackwardsAndShoot;
 import org.iolani.frc.util.PowerScaler;
 
 /**
@@ -111,7 +111,7 @@ public class OI {
             });
         
         // autonomous testing //
-        _autoTestButton.whenPressed(new AutoDriveForwardAndShoot());
+        _autoTestButton.whenPressed(new AutoDriveBackwardsAndShoot());
         
         // testing code for vision
         _visionButton  = new NetworkButton(CommandBase.table, "connected");

@@ -15,7 +15,7 @@ public class LaunchBallAndRetract extends CommandGroup {
     
     public LaunchBallAndRetract() {
         this.addSequential(new LaunchBall());
-        this.addParallel(new SetBallGrabber(true, 500));
+        this.addParallel(new SetBallGrabber(true, 1000));
         this.addParallel(new RetractCatapult());
     }
 }
