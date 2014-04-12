@@ -6,11 +6,15 @@ private static final int _green_color_threshold = 110; //How far the color can b
 private static final int _blue_color_threshold = 120; //blue values need to be LESS than this in order to qualify a pixel as truly red
 private static final int _red_color_threshold = 30; //red values need to be LESS than this
 
+private static final double rectangularityThreshold = 0.75;
+
+private static final float aspect_ratio_horizontal = 6.0; //Ideal aspect ratios of the horizontal and vertical targets
+private static final float aspect_ratio_vertical   = 0.125;
+
 // Using AXIS 206 camera's lowest quality size to speed up image processing
 private static int greenPixels;
 private static final int camWidth = 320;
 private static final int camHeight = 240;
-private static final double rectangularityThreshold = 0.75;
 
 int currentPixel; //The array index of the pixel we're looking at
 PImage greenFiltered; //New black and white image based on the green pixels
@@ -67,10 +71,16 @@ void draw(){
     int validBlobCount = 0;
     //Checks based on rectangularity and aspect ratio, each with 25% tolerance
     for(int i = 0; i < blobDetector.getBlobNb(); i++){
-      if(computeRectangularity(blobDetector.getBlob(i)) > 0.75 && ((computeAspectRatio(blobDetector.getBlob(i)) > 0.09375 && computeAspectRatio(blobDetector.getBlob(i)) < 0.15625) || (computeAspectRatio(blobDetector.getBlob(i)) > 4.5 && computeAspectRatio(blobDetector.getBlob(i)) < 7.5))){
+      if(computeRectangularity(blobDetector.getBlob(i)) > 0.75 && 
+      ((computeAspectRatio(blobDetector.getBlob(i)) > aspect_ratio_horizontal * 0.75 && //Horizontal target
+      computeAspectRatio(blobDetector.getBlob(i)) < aspect_ratio_horizontal * 1.25 || 
+      (computeAspectRatio(blobDetector.getBlob(i)) > aspect_ratio_vertical * 0.75 &&  //Vertical target
+      computeAspectRatio(blobDetector.getBlob(i)) < aspect_ratio_vertical * 1.25)))){
         validBlobCount++;
       }
-      if(computeRectangularity(blobDetector.getBlob(i)) > 0.75) && computeAspectRatio(blobDetector.getBlob(i)) > 0.09375 && computeAspectRatio(blobDetector.getBlob(i)) < 0.15625)  {
+      if((computeRectangularity(blobDetector.getBlob(i)) > 0.75) && 
+      (computeAspectRatio(blobDetector.getBlob(i)) > aspect_ratio_vertical * 0.75) && //Vertical target
+      (computeAspectRatio(blobDetector.getBlob(i)) < aspect_ratio_vertical * 1.25))  {
           if(blobDetector.getBlob(i).x > 0.5) {
             // blob is on right side of camera frame
             table.putBoolean("rightHot", true);
