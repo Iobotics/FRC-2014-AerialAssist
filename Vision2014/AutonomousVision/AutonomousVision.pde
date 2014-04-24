@@ -10,6 +10,9 @@ private static final double _rectangularityThreshold = 0.75;
 
 private static final float aspect_ratio_horizontal = 6.0; //Ideal aspect ratios of the horizontal and vertical targets
 private static final float aspect_ratio_vertical   = 0.125;
+private static final float _lowToleranceFactor = 0.75;
+private static final float _highToleranceFactor = 1.25;
+// Aspect ratios are validated within a 25% tolerance level (from 75 to 125 percent)
 
 // Using AXIS 206 camera's lowest quality size to speed up image processing
 private static int greenPixels;
@@ -76,15 +79,15 @@ void draw(){
     //Checks based on rectangularity and aspect ratio, each with 25% tolerance
     for(int i = 0; i < blobDetector.getBlobNb(); i++){
       if(computeRectangularity(blobDetector.getBlob(i)) > _rectangularityThreshold && 
-      ((computeAspectRatio(blobDetector.getBlob(i)) > aspect_ratio_horizontal * 0.75 && //Horizontal target
-      computeAspectRatio(blobDetector.getBlob(i)) < aspect_ratio_horizontal * 1.25 || 
-      (computeAspectRatio(blobDetector.getBlob(i)) > aspect_ratio_vertical * 0.75 &&  //Vertical target
-      computeAspectRatio(blobDetector.getBlob(i)) < aspect_ratio_vertical * 1.25)))){
+      ((computeAspectRatio(blobDetector.getBlob(i)) > aspect_ratio_horizontal * _lowToleranceFactor && //Horizontal target
+      computeAspectRatio(blobDetector.getBlob(i)) < aspect_ratio_horizontal * _highToleranceFactor || 
+      (computeAspectRatio(blobDetector.getBlob(i)) > aspect_ratio_vertical * _lowToleranceFactor &&  //Vertical target
+      computeAspectRatio(blobDetector.getBlob(i)) < aspect_ratio_vertical * _highToleranceFactor)))){
         validBlobCount++;
       }
       if((computeRectangularity(blobDetector.getBlob(i)) > _rectangularityThreshold) && 
-      (computeAspectRatio(blobDetector.getBlob(i)) > aspect_ratio_vertical * 0.75) && //Vertical target
-      (computeAspectRatio(blobDetector.getBlob(i)) < aspect_ratio_vertical * 1.25))  {
+      (computeAspectRatio(blobDetector.getBlob(i)) > aspect_ratio_vertical * _lowToleranceFactor) && //Vertical target
+      (computeAspectRatio(blobDetector.getBlob(i)) < aspect_ratio_vertical * _highToleranceFactor))  {
           if(blobDetector.getBlob(i).x > 0.5) {
             // blob is on right side of camera frame
             table.putBoolean("rightHot", true);
