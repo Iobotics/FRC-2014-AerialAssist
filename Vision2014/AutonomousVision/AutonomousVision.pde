@@ -37,6 +37,7 @@ void setup() {
   size(camWidth, camHeight);
   blobDetector.setPosDiscrimination(false);
   blobDetector.setThreshold(0.5);
+  println("Setup complete!");
 }
 
 boolean set = false;
