@@ -16,6 +16,9 @@ private static int greenPixels;
 private static final int camWidth = 320;
 private static final int camHeight = 240;
 
+private static final String _clientIPAddress = "10.24.38.2";
+private static final String _cameraURL = "http://10.24.38.11/mjpg/video.mjpg";
+
 int currentPixel; //The array index of the pixel we're looking at
 PImage greenFiltered; //New black and white image based on the green pixels
 IPCapture cam; //Frame from the camera
@@ -27,9 +30,9 @@ NetworkTable table;
 void setup() {
   println("Initializing...");
   NetworkTable.setClientMode();
-  NetworkTable.setIPAddress("10.24.38.2");
+  NetworkTable.setIPAddress(_clientIPAddress);
   table = NetworkTable.getTable("vision");
-  greenFiltered = cam = new IPCapture(this, "http://10.24.38.11/mjpg/video.mjpg", "", "");
+  greenFiltered = cam = new IPCapture(this, _cameraURL, "", "");
   cam.start();  
   size(camWidth, camHeight);
   blobDetector.setPosDiscrimination(false);
