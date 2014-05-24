@@ -153,25 +153,23 @@ double computeRectangularity(Blob blob) { //Returns proportional rectangularity;
   
 
 double blobArea(Blob blob) { //Returns the combined area of all triangles in a blob
-  EdgeVertex point1; //Points that make up each triangle
-  EdgeVertex point2;
-  EdgeVertex point3;
-  float length1; //Lengths of each triangle's edge
-  float length2;
-  float length3;
-  float semiperimiter;
-  double totalArea = 0;
-  for(int i = 0; i < blob.getTriangleNb(); i++) { //Uses Hero's Formula to get the area of each triangle
-    point1 = blob.getTriangleVertexA(blob.getTriangle(0));
-    point2 = blob.getTriangleVertexB(blob.getTriangle(0));
-    point3 = blob.getTriangleVertexA(blob.getTriangle(0));
-    length1 = dist(denormalize(point1.x, camWidth), denormalize(point1.y, camHeight), denormalize(point2.x, camWidth), denormalize(point2.y, camHeight));
-    length2 = dist(denormalize(point1.x, camWidth), denormalize(point1.y, camHeight), denormalize(point3.x, camWidth), denormalize(point3.y, camHeight));
-    length3 = dist(denormalize(point2.x, camWidth), denormalize(point2.y, camHeight), denormalize(point3.x, camWidth), denormalize(point3.y, camHeight));
-    semiperimiter = (length1 + length2 + length3) / 2;
-    totalArea += sqrt(semiperimiter * (semiperimiter - length1) * (semiperimiter - length2) * (semiperimiter - length3));
+  greenFiltered.loadPixels();
+  int pixelCount = 0;
+  int left = round(denormalize(blob.xMin, width));
+  int top = round(denormalize(blob.yMin, height));
+  int bWidth = round(denormalize(blob.w, width));
+  int bHeight = round(denormalize(blob.h, height));
+  for(int x = 0; x < bWidth; x++){
+    for(int y = 0; y < bHeight; y++){
+      int imageX = left + x;
+      int imageY = top + y;
+      int currentPixel = imageX + (width * imageY);
+      if(greenFiltered.pixels[currentPixel] == color(0, 0, 0)) pixelCount++; 
+    }
   }
-  return totalArea;
+  return pixelCount;
 }
 
-
+String vertexString(EdgeVertex v) {
+   return "(" + denormalize(v.x, width) + ", " + denormalize(v.y, height) + ")"; 
+}
