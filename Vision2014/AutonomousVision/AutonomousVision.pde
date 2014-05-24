@@ -19,8 +19,8 @@ private static int greenPixels;
 private static final int camWidth = 320;
 private static final int camHeight = 240;
 
-private static final String _clientIPAddress = "10.24.38.2";
-private static final String _cameraURL = "http://10.24.38.11/mjpg/video.mjpg";
+private static final String _clientIPAddress = "10.99.99.2";
+private static final String _cameraURL = "http://10.99.99.11/mjpg/video.mjpg";
 
 int currentPixel; //The array index of the pixel we're looking at
 PImage greenFiltered; //New black and white image based on the green pixels
