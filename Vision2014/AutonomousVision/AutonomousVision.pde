@@ -40,6 +40,7 @@ void setup() {
   size(camWidth, camHeight);
   blobDetector.setPosDiscrimination(false);
   blobDetector.setThreshold(0.5);
+  blobDetector.setConstants(1000, 4000, 5000);
   println("Setup complete!");
 }
 
@@ -47,6 +48,8 @@ boolean set = false;
 boolean blobSet = false;
 
 void draw(){  
+  textSize(10);
+  fill(50);
   if(cam.isAvailable()) {
     cam.read();   
     //image(greenFiltered,0,0);
@@ -73,11 +76,24 @@ void draw(){
         }
       }
     }
+    
+    greenFiltered.updatePixels();
+    image(greenFiltered,0,0);
+  
     //greenFiltered.
     blobDetector.computeBlobs(greenFiltered.pixels); //Compute blobs on the new image
+    blobDetector.computeTriangles();
+    
+    stroke(255, 0, 0);
+    noFill();
+    
     int validBlobCount = 0;
     //Checks based on rectangularity and aspect ratio, each with 25% tolerance
     for(int i = 0; i < blobDetector.getBlobNb(); i++){
+      Blob blob = blobDetector.getBlob(i);
+      text("(" + i + "," + computeRectangularity(blob) + "," + computeAspectRatio(blob) + ", " + blob.getTriangleNb() + ", " + blob.getEdgeNb() +  ")", 0, 16 * (i + 1));
+      point(denormalize(blob.x, width), denormalize(blob.y, height));
+      rect(denormalize(blob.xMin, width), denormalize(blob.yMin, height), denormalize(blob.w, width), denormalize(blob.h, height));
       if(computeRectangularity(blobDetector.getBlob(i)) > _rectangularityThreshold && 
       ((computeAspectRatio(blobDetector.getBlob(i)) > aspect_ratio_horizontal * _lowToleranceFactor && //Horizontal target
       computeAspectRatio(blobDetector.getBlob(i)) < aspect_ratio_horizontal * _highToleranceFactor || 
@@ -98,7 +114,7 @@ void draw(){
           }
       }
     }
-    System.out.println("There are " + blobDetector.getBlobNb() + " blobs.");
+    //println("There are " + blobDetector.getBlobNb() + " blobs.");
     if(validBlobCount > 0)  {
       if(!blobSet && table.isConnected()) {
         table.putBoolean("blobDetected", true);
@@ -117,8 +133,6 @@ void draw(){
     set = true;
     println("set 'connected' to true");
   }
-  greenFiltered.updatePixels();
-  image(greenFiltered,0,0);
 }
 
 
