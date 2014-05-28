@@ -6,12 +6,11 @@ private static final int _green_color_threshold = 110; //How far the color can b
 private static final int _blue_color_threshold = 120; //blue values need to be LESS than this in order to qualify a pixel as truly red
 private static final int _red_color_threshold = 30; //red values need to be LESS than this
 
-private static final double _rectangularityThreshold = 0.75;
+private static final double _rectangularityThreshold = 0.25;
 
 private static final float aspect_ratio_horizontal = 6.0; //Ideal aspect ratios of the horizontal and vertical targets
 private static final float aspect_ratio_vertical   = 0.125;
-private static final float _lowToleranceFactor = 0.75;
-private static final float _highToleranceFactor = 1.25;
+private static final float _aspectRatioTolerance = 0.25;
 // Aspect ratios are validated within a 25% tolerance level (from 75 to 125 percent)
 
 // Using AXIS 206 camera's lowest quality size to speed up image processing
