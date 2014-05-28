@@ -177,3 +177,7 @@ boolean checkAspectRatio(Blob blob, double threshold, double tolerance){
   double aspectRatio = computeAspectRatio(blob);
   return ((aspectRatio > (threshold * (1.0 - tolerance))) && (aspectRatio < (threshold * (1.0 + tolerance))));
 }
+boolean checkRectangularity(Blob blob, double threshold){
+  return (computeRectangularity(blob) > threshold);
+}
+
