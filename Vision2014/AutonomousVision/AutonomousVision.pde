@@ -22,7 +22,6 @@ private static final String _clientIPAddress = "10.99.99.2";
 private static final String _cameraURL = "http://10.99.99.11/mjpg/video.mjpg";
 
 int currentPixel; //The array index of the pixel we're looking at
-PImage greenFiltered; //New black and white image based on the green pixels
 IPCapture cam; //Frame from the camera
 
 BlobDetection blobDetector = new BlobDetection(camWidth, camHeight);
@@ -34,7 +33,7 @@ void setup() {
   NetworkTable.setClientMode();
   NetworkTable.setIPAddress(_clientIPAddress);
   table = NetworkTable.getTable("vision");
-  greenFiltered = cam = new IPCapture(this, _cameraURL, "", "");
+  cam = new IPCapture(this, _cameraURL, "", "");
   cam.start();  
   size(camWidth, camHeight);
   blobDetector.setPosDiscrimination(false);
@@ -51,11 +50,9 @@ void draw(){
   fill(50);
   if(cam.isAvailable()) {
     cam.read();   
-    //image(greenFiltered,0,0);
   }
   greenPixels = 0;
   cam.loadPixels();
-  greenFiltered.loadPixels();
   
   if(cam.pixels.length > 0) {
     for(int x = 0; x < camWidth; x++) { //Iterate through each column
@@ -66,21 +63,20 @@ void draw(){
              && (red(cam.pixels[currentPixel]) < _red_color_threshold)) { //Makes sure each pixel has a sufficient amount of green, and not too much red / blue
           stroke(0, 0, 0);
           greenPixels++;
-          greenFiltered.pixels[currentPixel] = color(0, 0, 0); //Map all green points to black on the new image
+          cam.pixels[currentPixel] = color(0, 0, 0); //Map all green points to black on the new image
           point(x,y); //===FOR DEBUGGING: Puts a point at every point detected as green
         } else {
-          greenFiltered.pixels[currentPixel] = color(255, 255, 255); //Map all nongreen points to white on the new image
+          cam.pixels[currentPixel] = color(255, 255, 255); //Map all nongreen points to white on the new image
           stroke(255, 255, 255);
           point(x,y);
         }
       }
     }
     
-    greenFiltered.updatePixels();
-    image(greenFiltered,0,0);
-  
-    //greenFiltered.
-    blobDetector.computeBlobs(greenFiltered.pixels); //Compute blobs on the new image
+    cam.updatePixels();
+    image(cam,0,0);
+
+    blobDetector.computeBlobs(cam.pixels); //Compute blobs on the new image
     blobDetector.computeTriangles();
     
     stroke(255, 0, 0);
@@ -147,7 +143,7 @@ double computeRectangularity(Blob blob) { //Returns proportional rectangularity;
   
 
 double blobArea(Blob blob) { //Returns the combined area of all triangles in a blob
-  greenFiltered.loadPixels();
+  cam.loadPixels();
   int pixelCount = 0;
   int left = round(denormalize(blob.xMin, width));
   int top = round(denormalize(blob.yMin, height));
@@ -158,7 +154,7 @@ double blobArea(Blob blob) { //Returns the combined area of all triangles in a b
       int imageX = left + x;
       int imageY = top + y;
       int currentPixel = imageX + (width * imageY);
-      if(greenFiltered.pixels[currentPixel] == color(0, 0, 0)) pixelCount++; 
+      if(cam.pixels[currentPixel] == color(0, 0, 0)) pixelCount++; 
     }
   }
   return pixelCount;
