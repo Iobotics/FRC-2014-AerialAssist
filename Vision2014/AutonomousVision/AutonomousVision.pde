@@ -93,16 +93,11 @@ void draw(){
       text("(" + i + "," + computeRectangularity(blob) + "," + computeAspectRatio(blob) + ", " + blob.getTriangleNb() + ", " + blob.getEdgeNb() +  ")", 0, 16 * (i + 1));
       point(denormalize(blob.x, width), denormalize(blob.y, height));
       rect(denormalize(blob.xMin, width), denormalize(blob.yMin, height), denormalize(blob.w, width), denormalize(blob.h, height));
-      if(computeRectangularity(blobDetector.getBlob(i)) > _rectangularityThreshold && 
-      ((computeAspectRatio(blobDetector.getBlob(i)) > aspect_ratio_horizontal * _lowToleranceFactor && //Horizontal target
-      computeAspectRatio(blobDetector.getBlob(i)) < aspect_ratio_horizontal * _highToleranceFactor || 
-      (computeAspectRatio(blobDetector.getBlob(i)) > aspect_ratio_vertical * _lowToleranceFactor &&  //Vertical target
-      computeAspectRatio(blobDetector.getBlob(i)) < aspect_ratio_vertical * _highToleranceFactor)))){
-        validBlobCount++;
-      }
-      if((computeRectangularity(blobDetector.getBlob(i)) > _rectangularityThreshold) && 
-      (computeAspectRatio(blobDetector.getBlob(i)) > aspect_ratio_vertical * _lowToleranceFactor) && //Vertical target
-      (computeAspectRatio(blobDetector.getBlob(i)) < aspect_ratio_vertical * _highToleranceFactor))  {
+      if(checkRectangularity(blob, _rectangularityThreshold) && checkSize(blob, 5)){ 
+        if(checkAspectRatio(blob, aspect_ratio_horizontal, _aspectRatioTolerance)); //Horizontal target
+          validBlobCount++;
+        } else if(checkAspectRatio(blob, aspect_ratio_vertical, _aspectRatioTolerance)) {//Vertical target
+          validBlobCount++;
           if(blobDetector.getBlob(i).x > 0.5) {
             // blob is on right side of camera frame
             table.putBoolean("rightHot", true);
@@ -111,7 +106,7 @@ void draw(){
             // blob is on left side of camera frame
             table.putBoolean("rightHot", false);
           }
-      }
+        }
     }
     //println("There are " + blobDetector.getBlobNb() + " blobs.");
     if(validBlobCount > 0)  {
