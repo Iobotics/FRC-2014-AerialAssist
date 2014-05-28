@@ -172,3 +172,8 @@ double blobArea(Blob blob) { //Returns the combined area of all triangles in a b
 String vertexString(EdgeVertex v) {
    return "(" + denormalize(v.x, width) + ", " + denormalize(v.y, height) + ")"; 
 }
+
+boolean checkAspectRatio(Blob blob, double threshold, double tolerance){
+  double aspectRatio = computeAspectRatio(blob);
+  return ((aspectRatio > (threshold * (1.0 - tolerance))) && (aspectRatio < (threshold * (1.0 + tolerance))));
+}
