@@ -18,8 +18,8 @@ private static int greenPixels;
 private static final int camWidth = 320;
 private static final int camHeight = 240;
 
-private static final String _clientIPAddress = "10.99.99.2";
-private static final String _cameraURL = "http://10.99.99.11/mjpg/video.mjpg";
+private static final String _clientIPAddress = "10.24.38.2";
+private static final String _cameraURL = "http://10.24.38.11/mjpg/video.mjpg";
 
 int currentPixel; //The array index of the pixel we're looking at
 IPCapture cam; //Frame from the camera
@@ -89,8 +89,8 @@ void draw(){
       text("(" + i + "," + computeRectangularity(blob) + "," + computeAspectRatio(blob) + ", " + blob.getTriangleNb() + ", " + blob.getEdgeNb() +  ")", 0, 16 * (i + 1));
       point(denormalize(blob.x, width), denormalize(blob.y, height));
       rect(denormalize(blob.xMin, width), denormalize(blob.yMin, height), denormalize(blob.w, width), denormalize(blob.h, height));
-      if(checkRectangularity(blob, _rectangularityThreshold) && checkSize(blob, 5)){ 
-        if(checkAspectRatio(blob, aspect_ratio_horizontal, _aspectRatioTolerance)); //Horizontal target
+      if(checkRectangularity(blob, _rectangularityThreshold) && checkSize(blob, 5)) {
+        if(checkAspectRatio(blob, aspect_ratio_horizontal, _aspectRatioTolerance)) { //Horizontal target
           validBlobCount++;
         } else if(checkAspectRatio(blob, aspect_ratio_vertical, _aspectRatioTolerance)) {//Vertical target
           validBlobCount++;
@@ -103,18 +103,16 @@ void draw(){
             table.putBoolean("rightHot", false);
           }
         }
-    }
-    //println("There are " + blobDetector.getBlobNb() + " blobs.");
-    if(validBlobCount > 0)  {
-      if(!blobSet && table.isConnected()) {
-        table.putBoolean("blobDetected", true);
-        blobSet = true;
-        println("set 'blobDetected' to true; Valid blob cound == " + validBlobCount);
       }
-      else  {
+    }
+    println("Valid blobs: " + validBlobCount);
+    if(table.isConnected()){
+      if(validBlobCount > 0)  {
+        table.putBoolean("blobDetected", true);
+        println("Test: Blob detected");
+      } else{
         table.putBoolean("blobDetected", false);
-        blobSet = false;
-        println("reset blobDetected");
+        println("Test: Blob not detected");
       }
     }
   }
