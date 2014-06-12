@@ -118,7 +118,7 @@ public class OI {
         _visionButton.whenPressed(new PrintCommand("Hello vision"));
         _blobButton = new NetworkButton(CommandBase.table, "blobDetected");
         _blobButton.whenPressed(new PrintCommand("Houston, we have a blob :)"));
-        
+        _blobButton.whenPressed(new AutoDriveBackwardsAndShoot());
     }
     
     public PowerScaler getMecanumDriveScaler() {
