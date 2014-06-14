@@ -29,7 +29,7 @@ BlobDetection blobDetector = new BlobDetection(camWidth, camHeight);
 NetworkTable table;
 
 void setup() {
-  println("Initializing...");
+  //println("Initializing...");
   NetworkTable.setClientMode();
   NetworkTable.setIPAddress(_clientIPAddress);
   table = NetworkTable.getTable("vision");
@@ -39,7 +39,7 @@ void setup() {
   blobDetector.setPosDiscrimination(false);
   blobDetector.setThreshold(0.5);
   blobDetector.setConstants(1000, 4000, 5000);
-  println("Setup complete!");
+  //println("Setup complete!");
 }
 
 boolean set = false;
@@ -50,9 +50,9 @@ void draw(){
   fill(50);
   if(cam.isAvailable()) {
     cam.read();   
+    greenPixels = 0;
+    cam.loadPixels();
   }
-  greenPixels = 0;
-  cam.loadPixels();
   
   if(cam.pixels.length > 0) {
     for(int x = 0; x < camWidth; x++) { //Iterate through each column
@@ -61,24 +61,22 @@ void draw(){
         if((green(cam.pixels[currentPixel]) > _green_color_threshold) 
              && (blue(cam.pixels[currentPixel]) < _blue_color_threshold) 
              && (red(cam.pixels[currentPixel]) < _red_color_threshold)) { //Makes sure each pixel has a sufficient amount of green, and not too much red / blue
-          stroke(0, 0, 0);
           greenPixels++;
           cam.pixels[currentPixel] = color(0, 0, 0); //Map all green points to black on the new image
-          point(x,y); //===FOR DEBUGGING: Puts a point at every point detected as green
+          //point(x,y); //===FOR DEBUGGING: Puts a point at every point detected as green
         } else {
           cam.pixels[currentPixel] = color(255, 255, 255); //Map all nongreen points to white on the new image
-          stroke(255, 255, 255);
-          point(x,y);
+          //stroke(255, 255, 255);
+          //point(x,y);
         }
       }
-    }
-    
-    cam.updatePixels();
-    image(cam,0,0);
+      
+      cam.updatePixels();
+      image(cam,0,0);
+    }    
 
     blobDetector.computeBlobs(cam.pixels); //Compute blobs on the new image
-    blobDetector.computeTriangles();
-    
+     
     stroke(255, 0, 0);
     noFill();
     
@@ -94,32 +92,32 @@ void draw(){
           validBlobCount++;
         } else if(checkAspectRatio(blob, aspect_ratio_vertical, _aspectRatioTolerance)) {//Vertical target
           validBlobCount++;
-          if(blobDetector.getBlob(i).x > 0.5) {
+          if(blob.x > 0.5) {
             // blob is on right side of camera frame
-            table.putBoolean("rightHot", true);
+            //table.putBoolean("rightHot", true);
           }
           else  {
             // blob is on left side of camera frame
-            table.putBoolean("rightHot", false);
+            //table.putBoolean("rightHot", false);
           }
         }
       }
     }
-    println("Valid blobs: " + validBlobCount);
+    //println("Valid blobs: " + validBlobCount);
     if(table.isConnected()){
       if(validBlobCount > 1)  {
         table.putBoolean("blobDetected", true);
-        println("Test: Blob detected");
+        //println("Test: Blob detected");
       } else{
         table.putBoolean("blobDetected", false);
-        println("Test: Blob not detected");
+        //println("Test: Blob not detected");
       }
     }
   }
   if(!set && table.isConnected()) {
     table.putBoolean("connected", true);
     set = true;
-    println("set 'connected' to true");
+    //println("set 'connected' to true");
   }
 }
 
