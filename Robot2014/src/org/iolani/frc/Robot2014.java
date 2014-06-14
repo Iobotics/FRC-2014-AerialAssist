@@ -13,9 +13,10 @@ import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.iolani.frc.commands.CommandBase;
-import org.iolani.frc.commands.auto.AutoDropBallDriveAndShoot;
+import org.iolani.frc.commands.auto.AutoDriveBackwardsAndShoot;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,6 +28,8 @@ import org.iolani.frc.commands.auto.AutoDropBallDriveAndShoot;
 public class Robot2014 extends IterativeRobot {
 
     private Command _autoCommand;
+    private boolean _hasStartedAuto;
+    private NetworkTable _visionTable;
     
     /**
      * This function is run when the robot is first started up and should be
@@ -44,21 +47,23 @@ public class Robot2014 extends IterativeRobot {
         /*_autoCommand = CommandBase.ballGrabber.isBallSensed()?
                 (Command) new AutoDriveBackwardsAndShoot():
                 (Command) new AutoDriveBackwards();*/
-        _autoCommand = new AutoDropBallDriveAndShoot();
+        _autoCommand = new AutoDriveBackwardsAndShoot();
+        _hasStartedAuto = false;
+        _visionTable = NetworkTable.getTable("vision");
     }
 
     public void autonomousInit() {
         System.out.println("Autonomous mode active");
-        // schedule the autonomous command (example)
-        if(_autoCommand != null) {
-            _autoCommand.start();
-        }
     }
 
     /**
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
+        if(!_hasStartedAuto && _visionTable.getBoolean("blobDetected")){
+            _hasStartedAuto = true;
+            _autoCommand.start();
+        }
         Scheduler.getInstance().run();
     }
 
@@ -94,7 +99,7 @@ public class Robot2014 extends IterativeRobot {
         SmartDashboard.putNumber("right-stick-x", CommandBase.oi.getRightStick().getX());
         SmartDashboard.putNumber("right-stick-y", CommandBase.oi.getRightStick().getY());
         
-        boolean current = CommandBase.table.getBoolean("connected",false);
+        boolean current = _visionTable.getBoolean("connected",false);
         if(current != _last) {
             System.out.println("vision 'connected' changed: " + current);
             _last = current;

@@ -4,8 +4,6 @@ package org.iolani.frc;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.buttons.NetworkButton;
-import edu.wpi.first.wpilibj.command.PrintCommand;
 import org.iolani.frc.commands.AdjustBall;
 import org.iolani.frc.commands.CatchBall;
 import org.iolani.frc.commands.CommandBase;
@@ -54,9 +52,6 @@ public class OI {
     private final Button _retractButton      = new JoystickButton(_rStick, 7);
     private final Button _lobTestButton      = new JoystickButton(_rStick, 6);
     private final Button _releaseWinchButton = new JoystickButton(_rStick, 11);
-    
-    private final NetworkButton _visionButton;
-    private final NetworkButton _blobButton;
 
     private final PowerScaler _mecanumDriveScaler;
     private final PowerScaler _tractionDriveScaler;
@@ -112,13 +107,6 @@ public class OI {
         
         // autonomous testing //
         _autoTestButton.whenPressed(new AutoDriveBackwardsAndShoot());
-        
-        // testing code for vision
-        _visionButton  = new NetworkButton(CommandBase.table, "connected");
-        _visionButton.whenPressed(new PrintCommand("Hello vision"));
-        _blobButton = new NetworkButton(CommandBase.table, "blobDetected");
-        _blobButton.whenPressed(new PrintCommand("Houston, we have a blob :)"));
-        _blobButton.whenPressed(new AutoDriveBackwardsAndShoot());
     }
     
     public PowerScaler getMecanumDriveScaler() {
