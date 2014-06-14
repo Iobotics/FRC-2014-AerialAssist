@@ -113,6 +113,7 @@ public class Robot2014 extends IterativeRobot {
      */
     public void disabledInit() {
         System.out.println("Disabled mode active");
+        _hasStartedAuto = false;
     }
     
     /**
