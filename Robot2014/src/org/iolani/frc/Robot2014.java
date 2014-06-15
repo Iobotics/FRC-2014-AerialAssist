@@ -10,6 +10,7 @@ package org.iolani.frc;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -30,6 +31,7 @@ public class Robot2014 extends IterativeRobot {
     private Command _autoCommand;
     private boolean _hasStartedAuto;
     private NetworkTable _visionTable;
+    private Timer _autoStartTimer;
     
     /**
      * This function is run when the robot is first started up and should be
@@ -50,17 +52,19 @@ public class Robot2014 extends IterativeRobot {
         _autoCommand = new AutoDriveBackwardsAndShoot();
         _hasStartedAuto = false;
         _visionTable = NetworkTable.getTable("vision");
+        _autoStartTimer = new Timer();
     }
 
     public void autonomousInit() {
         System.out.println("Autonomous mode active");
+        _autoStartTimer.start();
     }
 
     /**
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-        if(!_hasStartedAuto && _visionTable.getBoolean("blobDetected")){
+        if(!_hasStartedAuto && (_autoStartTimer.get() >= 5 || _visionTable.getBoolean("blobDetected"))){
             _hasStartedAuto = true;
             _autoCommand.start();
         }
@@ -76,6 +80,7 @@ public class Robot2014 extends IterativeRobot {
         if(_autoCommand != null && _autoCommand.isRunning()) {
             _autoCommand.cancel();
         }
+        _autoStartTimer.stop();
     }
 
     /**
